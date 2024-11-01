@@ -4,8 +4,6 @@ description: "An overview of my work as Head of Design for GIIS Tech Club."
 date: "Nov 1 2024"
 ---
 
-![Astro Sphere Lighthouse Score](/astro-sphere.jpg)
-
 I started my work as Head of Design for the GIIS Tech Club in December of last year; since then we've become a non-profit organization, partnered with one of the largest banks in Southeast Asia, and empowered hundreds of teenagers to learn and pursue skills in STEM.  
 
 This is essentially an archive of our brand.
