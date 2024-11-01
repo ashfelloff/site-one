@@ -2,7 +2,7 @@
 company: "GIIS Tech Club"
 role: "Head of Design"
 dateStart: "12/22/2023"
-dateEnd: "11/15/2024"
+dateEnd: "Current"
 ---
 
 Created all the clubs digital assets and helped managed its social media. Gained over 80000 interactions.
