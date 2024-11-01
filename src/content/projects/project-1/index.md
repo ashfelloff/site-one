@@ -1,16 +1,14 @@
 ---
-title: "Astro Sphere"
-description: "Portfolio and blog build with astro."
-date: "Mar 18 2024"
-demoURL: "https://astro-sphere-demo.vercel.app"
-repoURL: "https://github.com/markhorn-dev/astro-sphere"
+title: "Designing a platform to empower youth through technology. "
+description: "An overview of my work as Head of Design for GIIS Tech Club."
+date: "Nov 1st 2024"
 ---
 
 ![Astro Sphere Lighthouse Score](/astro-sphere.jpg)
 
-Astro Sphere is a static, minimalist, lightweight, lightning fast portfolio and blog theme based on my personal website.
+I started my work as Head of Design for the GIIS Tech Club in December of last year; since then we've become a non-profit organization, partnered with one of the largest banks in Southeast Asia, and empowered hundreds of teenagers to learn and pursue skills in STEM.  
 
-It is primarily Astro, Tailwind and Typescript, with a very small amount of SolidJS for stateful components.
+This is essentially an archive of our brand.
 
 ## 🚀 Deploy your own
 
