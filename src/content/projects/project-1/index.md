@@ -1,7 +1,7 @@
 ---
 title: "Designing a platform to empower youth through technology. "
 description: "An overview of my work as Head of Design for GIIS Tech Club."
-date: "Nov 1st 2024"
+date: "Nov 1 2024"
 ---
 
 ![Astro Sphere Lighthouse Score](/astro-sphere.jpg)
