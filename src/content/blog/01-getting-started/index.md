@@ -1,73 +1,15 @@
 ---
-title: "Getting started"
-description: "Hit the ground running."
-date: "Mar 22 2024"
+title: "Your guilt does not purify you."
+description: "My thoughts on the morality of guilt."
+date: "Aug 31 2024"
 ---
 
-The basic configuration of Nano is pretty simple.
+There are two kinds of wolves: one that kills and one that kills with remorse. The one with remorse weeps over their actions,they are plagued with the guilt of their own bringing. Does that make the wolf any more pure than the one that remained unfazed?
 
-Edit `src/consts.ts`
+Does the feeling of guilt after committing a wrong act, such as causing harm, make one morally superior? Or at the very least cleanse the wrongdoing?
 
-Customize the base site
+I believe guilt, by itself, is an internal emotional response and honestly just a means of justification. It does not necessarily lead to positive change or restitution and merely comforts and vindicates one’s actions. While guilt can be a sign of moral awareness, it doesn’t necessarily lead to meaningful change; the wolf that weeps can always weep again. In its very nature, guilt is self-serving, simply a way to alleviate moral discomfort. The person feeling guilty may seek reassurance or forgiveness to feel better rather than focusing on the actual harm caused. This turns the focus inward rather than on the direct consequences of their actions. Guilt also seems to serve as a form of “moral licensing” where a person might feel remorse compensates for their behaviour, almost as if the act of feeling guilty “balances out” the wrong.
 
-```ts 
-// src/consts.ts
+A person of moral integrity is one whose actions align with their moral values consistently, not just retroactively. Feeling guilty after doing something wrong is not as ethically valuable as consistently acting in a way that avoids harming others in the first place.
 
-export const SITE: Site = {
-  NAME: "Astro Nano",
-  EMAIL: "markhorn.dev@gmail.com",
-  NUM_POSTS_ON_HOMEPAGE: 3,
-  NUM_WORKS_ON_HOMEPAGE: 2,
-  NUM_PROJECTS_ON_HOMEPAGE: 3,
-};
-```
-
-| Field | Req | Description |
-| :---- | :-- | :-----------|
-| NAME | Yes | Displayed in header and footer. Used in SEO and RSS. |
-| EMAIL | Yes | Displayed in contact section. |
-| NUM_POSTS | Yes | Limit num of posts on home page. |
-| NUM_WORKS | Yes | Limit num of works on home page. |
-| NUM_PROJECTS | Yes | Limit num of projects on home page. |
-
-Customize your page metadata
-
-```ts 
-// src/consts.ts
-
-export const HOME: Metadata = {
-  TITLE: "Home",
-  DESCRIPTION: "Astro Nano is a minimal and lightweight blog and portfolio.",
-};
-```
-
-| Field | Req | Description |
-| :---- | :-- | :-----------|
-| TITLE | Yes | Displayed in browser tab. Used in SEO and RSS. |
-| DESCRIPTION | Yes | Used in SEO and RSS. |
-
-Customize your social media
-
-```ts 
-// src/consts.ts
-
-export const SOCIALS: Socials = [
-  { 
-    NAME: "twitter-x",
-    HREF: "https://twitter.com/markhorn_dev",
-  },
-  { 
-    NAME: "github",
-    HREF: "https://github.com/markhorn-dev"
-  },
-  { 
-    NAME: "linkedin",
-    HREF: "https://www.linkedin.com/in/markhorn-dev",
-  }
-];
-```
-
-| Field | Req | Description |
-| :---- | :-- | :-----------|
-| NAME | Yes | Displayed in contact section as a link. |
-| HREF | Yes | External url to social media profile. |
+“The dog that weeps after it kills is no better than the dog that doesn’t. My guilt will not purify me.”
