@@ -1,5 +1,5 @@
 ---
-title: "Designing a platform to empower youth through technology. "
+title: "Designing a Platform To Empower Youth Through Technology."
 description: "An overview of my work as Head of Design for GIIS Tech Club."
 date: "Nov 1 2024"
 ---
@@ -10,7 +10,7 @@ I started my work as Head of Design for the GIIS Tech Club in December of last y
 
 This is essentially an archive of our brand.
 
-## 🚀 Deploy your own
+## Hackathon X
 
 <div class="flex gap-2">
   <a target="_blank" aria-label="Deploy with Vercel" href="https://vercel.com/new/clone?repository-url=https://github.com/markhorn-dev/astro-sphere">
@@ -21,27 +21,12 @@ This is essentially an archive of our brand.
   </a>
 </div>
 
-## 📋 Features
+## Bits&Bytes
 
-- ✅ 100/100 Lighthouse performance
-- ✅ Responsive
-- ✅ Accessible
-- ✅ SEO-friendly
-- ✅ Typesafe
-- ✅ Minimal style
-- ✅ Light/Dark Theme
-- ✅ Animated UI
-- ✅ Tailwind styling
-- ✅ Auto generated sitemap
-- ✅ Auto generated RSS Feed
-- ✅ Markdown support
-- ✅ MDX Support (components in your markdown)
-- ✅ Searchable content (posts and projects)
-
-## 💯 Lighthouse score
+## You ship, We ship
 ![Astro Sphere Lighthouse Score](/lighthouse.png)
 
-## 🕊️ Lightweight
+## Jackets
 All pages under 100kb (including fonts)
 
 ## ⚡︎ Fast
