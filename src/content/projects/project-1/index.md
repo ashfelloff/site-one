@@ -8,16 +8,19 @@ I started my work as Head of Design for the GIIS Tech Club in December of last y
 
 This is essentially an archive of our brand.
 
-## Hackathon X
+## GIIS Hackathon X
+After 6 months of work, and dozens of hours of reiterating, Hackathon X finally happened. Our Hackathon had been sponsored by DBS Singapore, Hack Club, and Wolfram Alpha; enabling us to make it free to all students and therefore more accessible. Despite being free, we compromised on <b>nothing</b>, setting the bar so high future iterations of GIIS Tech Club may not even come close. From merchandise, delicious food, prizes, film cameras, a photo booth, various consoles, and even 2 massive Mario Kart arcade machines—-we had everything.
 
-<div class="flex gap-2">
-  <a target="_blank" aria-label="Deploy with Vercel" href="https://vercel.com/new/clone?repository-url=https://github.com/markhorn-dev/astro-sphere">
-    <img src="/deploy_vercel.svg" />
-  </a>
-  <a target="_blank" aria-label="Deploy with Netlify" href="https://app.netlify.com/start/deploy?repository=https://github.com/markhorn-dev/astro-sphere">
-    <img src="/deploy_netlify.svg" />
-  </a>
-</div>
+As for the Design side of things, I personally created the following:
+- Hackathon X t-shirts
+- Lanyards and PVCs
+- Stickers!
+- Stage Graphics and Design
+- Posters (as well as a NFC photosystem that showed participants their pictures live as the event went on)
+
+ Additionally, I also made content for our social media. (This [reel](https://www.instagram.com/reel/C99zJphvfSC/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==) for instance)
+
+![GIIS Hackathon X](/hackathon main.JPG)
 
 ## Bits&Bytes
 
