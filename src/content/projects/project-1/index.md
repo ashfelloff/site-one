@@ -20,7 +20,7 @@ As for the Design side of things, I personally created the following:
 
  Additionally, I also made content for our social media. (This [reel](https://www.instagram.com/reel/C99zJphvfSC/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==) for instance)
 
-![GIIS Hackathon X](/hackathon main.JPG)
+![GIIS Hackathon X](/hackathonmain.JPG)
 
 ## Bits&Bytes
 
