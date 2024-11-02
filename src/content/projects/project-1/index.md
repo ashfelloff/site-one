@@ -21,7 +21,12 @@ As for the Design side of things, I personally created the following:
  Additionally, I also made content for our social media. (This [reel](https://www.instagram.com/reel/C99zJphvfSC/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==) for instance)
 
 ![GIIS Hackathon X](/hackathonmain.JPG)
-
+![GIIS Hackathon X](/hackathonaura.JPG)
+![GIIS Hackathon X](/hackathonfilmsticker.png)
+![GIIS Hackathon X](/hackathongroup.JPG)
+![GIIS Hackathon X](/hackathonstage.JPG)
+![GIIS Hackathon X](/hackathonsticker1.JPG)
+![GIIS Hackathon X](/hackathonsticker2.JPG)
 ## Bits&Bytes
 
 ## You ship, We ship
