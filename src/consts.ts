@@ -9,22 +9,22 @@ export const SITE: Site = {
 };
 
 export const HOME: Metadata = {
-  TITLE: "home",
+  TITLE: "HOME",
   DESCRIPTION: "Ashwath Chandran is a high-school student interested in Space, Economics, History and the future of Technology especially AI/ML, Web3, Extended Reality and Quantum Computing.",
 };
 
 export const BLOG: Metadata = {
-  TITLE: "blog",
+  TITLE: "BLOG",
   DESCRIPTION: "An archive of my thoughts and experiences.",
 };
 
 export const WORK: Metadata = {
-  TITLE: "work",
+  TITLE: "WORK",
   DESCRIPTION: "What I've been doing.",
 };
 
 export const PROJECTS: Metadata = {
-  TITLE: "projects",
+  TITLE: "PROJECTS",
   DESCRIPTION: "A collection of my projects.",
 };
 
