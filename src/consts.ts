@@ -9,7 +9,7 @@ export const SITE: Site = {
 };
 
 export const HOME: Metadata = {
-  TITLE: "Home",
+  TITLE: "AC",
   DESCRIPTION: "Ashwath Chandran is a high-school student interested in Space, Economics, History and the future of Technology especially AI/ML, Web3, Extended Reality and Quantum Computing.",
 };
 
