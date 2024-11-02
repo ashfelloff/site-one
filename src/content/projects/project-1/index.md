@@ -9,7 +9,7 @@ I started my work as Head of Design for the GIIS Tech Club in December of last y
 This is essentially an archive of our brand.
 
 ## GIIS Hackathon X
-After 6 months of work, and dozens of hours of reiterating, Hackathon X finally happened. Our Hackathon had been sponsored by DBS Singapore, Hack Club, and Wolfram Alpha; enabling us to make it free to all students and therefore more accessible. Despite being free, we compromised on <b>nothing</b>, setting the bar so high future iterations of GIIS Tech Club may not even come close. From merchandise, delicious food, prizes, film cameras, a photo booth, various consoles, and even 2 massive Mario Kart arcade machines—-we had everything.
+After six months of hard work and countless hours of reiteration, Hackathon X finally materialized. Our Hackathon was generously sponsored by DBS Singapore, Hack Club, and Wolfram Alpha, making it completely free for all students and significantly increasing its accessibility. Despite being free, <b>we didn’t compromise</b> on anything. We set the bar so high that future iterations of GIIS Tech Club may not even come close to matching our achievements. From merchandise and delicious food to prizes, film cameras, a photo booth, various consoles, and even two massive Mario Kart arcade machines, we had everything.
 
 As for the Design side of things, I personally created the following:
 - Hackathon X t-shirts
