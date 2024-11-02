@@ -33,6 +33,23 @@ As for the Design side of things, I personally created the following:
 
 ![GIIS Hackathon X](/hackathonsticker2.JPG)
 ## Bits&Bytes
+We wanted to do more with our platform, we wanted to truly <i>empower</i> students. So we started where all things start, and had our own Seed Funding Round! (we sold popcorn and profited off the impulsiveness of teenagers)
+
+Now, design-wise, this time I just had to create "postcards", some posters, our official club banner, and another (fire) [reel](https://www.instagram.com/reel/DA-bbZrvaAL/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==).
+
+![GIIS Hackathon X](/bb7.webp)
+
+![GIIS Hackathon X](/bb2.webp)
+
+![GIIS Hackathon X](/bb3.webp)
+
+![GIIS Hackathon X](/bb4.webp)
+
+![GIIS Hackathon X](/bb5.webp)
+
+![GIIS Hackathon X](/bb6.webp)
+
+**Oh..WE ALSO RAISED 800 SGD!**
 
 ## You ship, We ship
 ![Astro Sphere Lighthouse Score](/lighthouse.png)
