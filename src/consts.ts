@@ -1,7 +1,7 @@
 import type { Site, Metadata, Socials } from "@types";
 
 export const SITE: Site = {
-  NAME: "ac",
+  NAME: "Ashwath Chandran",
   EMAIL: "ashwxth@gmail.com",
   NUM_POSTS_ON_HOMEPAGE: 3,
   NUM_WORKS_ON_HOMEPAGE: 2,
@@ -9,22 +9,22 @@ export const SITE: Site = {
 };
 
 export const HOME: Metadata = {
-  TITLE: "AC",
+  TITLE: "home",
   DESCRIPTION: "Ashwath Chandran is a high-school student interested in Space, Economics, History and the future of Technology especially AI/ML, Web3, Extended Reality and Quantum Computing.",
 };
 
 export const BLOG: Metadata = {
-  TITLE: "Blog",
+  TITLE: "blog",
   DESCRIPTION: "An archive of my thoughts and experiences.",
 };
 
 export const WORK: Metadata = {
-  TITLE: "Work",
+  TITLE: "work",
   DESCRIPTION: "What I've been doing.",
 };
 
 export const PROJECTS: Metadata = {
-  TITLE: "Projects",
+  TITLE: "projects",
   DESCRIPTION: "A collection of my projects.",
 };
 
