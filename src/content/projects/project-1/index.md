@@ -7,7 +7,6 @@ date: "Nov 1 2024"
 I started my work as Head of Design for the GIIS Tech Club in December of last year; since then we've become a non-profit organization, partnered with one of the largest banks in Southeast Asia, and empowered hundreds of teenagers to learn and pursue skills in STEM.  
 
 This is essentially an archive of our brand.
-
 ## GIIS Hackathon X
 After six months of hard work and countless hours of reiteration, Hackathon X finally materialized. Our Hackathon was generously sponsored by DBS Singapore, Hack Club, and Wolfram Alpha, making it completely free for all students and significantly increasing its accessibility. Despite being free, <b>we didn’t compromise</b> on anything. We set the bar so high that future iterations of GIIS Tech Club may not even come close to matching our achievements. From merchandise and delicious food to prizes, film cameras, a photo booth, various consoles, and even two massive Mario Kart arcade machines, we had everything.
 
