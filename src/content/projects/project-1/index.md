@@ -37,22 +37,28 @@ We wanted to do more with our platform, we wanted to truly <i>empower</i> studen
 
 Now, design-wise, this time I just had to create "postcards", some posters, our official club banner, and another (fire) [reel](https://www.instagram.com/reel/DA-bbZrvaAL/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==).
 
-![GIIS Hackathon X](/bb7.webp)
+![bitsandbytes](/bb7.webp)
 
-![GIIS Hackathon X](/bb2.webp)
+![bitsandbytes](/bb2.webp)
 
-![GIIS Hackathon X](/bb3.webp)
+![bitsandbytes](/bb3.webp)
 
-![GIIS Hackathon X](/bb4.webp)
+![bitsandbytes](/bb4.webp)
 
-![GIIS Hackathon X](/bb5.webp)
+![bitsandbytes](/bb5.webp)
 
-![GIIS Hackathon X](/bb6.webp)
+![bitsandbytes](/bb6.webp)
 
-**Oh..WE ALSO RAISED 800 SGD!**
+Oh..WE ALSO RAISED 800 SGD!
 
 ## You ship, We ship.
-YSWS, otherwise known as "You ship, We ship," was one of our final initiatives. We encouraged students in our school to program and build their own website, and we offered to pay for their domains! Through YSWS, you could either meet some basic prerequisites and be eligible to receive your own custom domain, paid for by us; or you could get a fun, completely accessible-to-all giistech.club subdomain. This was all done through GitHub, and you can check out the [repo](https://github.com/emergenitro/ysws-domain) yourself!
+YSWS, otherwise known as "You ship, We ship," was one of our final initiatives. We encouraged students in our school to program and build their own website, and we offered to pay for their domains! Through YSWS, you could either meet some basic prerequisites and be eligible to receive your own custom domain, paid for by us; or you could get a fun, completely accessible-to-all giistech.club subdomain. This was all done through GitHub, and you can check out the [repo](https://github.com/emergenitro/ysws-domain) yourself. (shoutout our amazing secretary Karthik Sankar!)
+
+Now design-wise since this was a virtual initiative, all I had to do was get the word out. One way I did this was through an [Instagram post](https://www.instagram.com/p/DBLR5DuPFpT/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
+
+We also made these posters featuring my good friend Mayush. (don't search up yourdomain.giistech.club).
+
+![ysws](/yswsposter.PNG)
 
 ## Jackets
 All pages under 100kb (including fonts)
