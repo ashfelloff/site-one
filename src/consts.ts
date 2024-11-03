@@ -15,17 +15,17 @@ export const HOME: Metadata = {
 
 export const BLOG: Metadata = {
   TITLE: "BLOG",
-  DESCRIPTION: "An archive of my thoughts and experiences.",
+  DESCRIPTION: "An archive of my thoughts and experiences. Ashwath Chandran",
 };
 
 export const WORK: Metadata = {
   TITLE: "WORK",
-  DESCRIPTION: "What I've been doing.",
+  DESCRIPTION: "What I've been doing. Ashwath Chandran",
 };
 
 export const PROJECTS: Metadata = {
   TITLE: "PROJECTS",
-  DESCRIPTION: "A collection of my projects.",
+  DESCRIPTION: "A collection of my projects. Ashwath Chandran",
 };
 
 export const SOCIALS: Socials = [
