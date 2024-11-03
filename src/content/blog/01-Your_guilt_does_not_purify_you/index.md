@@ -3,6 +3,7 @@ title: "Your guilt does not purify you."
 description: "My thoughts on the morality of guilt."
 date: "Aug 31 2024"
 ---
+![Patrick Starfish](/blogone.webp)
 
 There are two kinds of wolves: one that kills and one that kills with remorse. The one with remorse weeps over their actions,they are plagued with the guilt of their own bringing. Does that make the wolf any more pure than the one that remained unfazed?
 
