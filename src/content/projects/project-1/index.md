@@ -51,8 +51,8 @@ Now, design-wise, this time I just had to create "postcards", some posters, our 
 
 **Oh..WE ALSO RAISED 800 SGD!**
 
-## You ship, We ship
-![Astro Sphere Lighthouse Score](/lighthouse.png)
+## You ship, We ship.
+YSWS, otherwise known as "You ship, We ship," was one of our final initiatives. We encouraged students in our school to program and build their own website, and we offered to pay for their domains! Through YSWS, you could either meet some basic prerequisites and be eligible to receive your own custom domain, paid for by us; or you could get a fun, completely accessible-to-all giistech.club subdomain. This was all done through GitHub, and you can check out the [repo](https://github.com/emergenitro/ysws-domain) yourself!
 
 ## Jackets
 All pages under 100kb (including fonts)
