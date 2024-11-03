@@ -55,7 +55,7 @@ YSWS, otherwise known as "You ship, We ship," was one of our final initiatives. 
 
 Now design-wise since this was a virtual initiative, all I had to do was get the word out. One way I did this was through an [Instagram post](https://www.instagram.com/p/DBLR5DuPFpT/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
 
-We also made these posters featuring my good friend Mayush. (don't search up yourdomain.giistech.club).
+We also made these posters featuring my good friend Mayush. (don't search up yourwebsite.giistech.club).
 
 ![ysws](/yswsposter.png)
 
