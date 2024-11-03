@@ -25,29 +25,29 @@ As for the Design side of things, I personally created the following:
 
 ![GIIS Hackathon X](/hackathonfilmsticker.png)
 
-![GIIS Hackathon X](/hackathongroup.JPG)
+![AshwathChandran](/hackathongroup.JPG)
 
-![GIIS Hackathon X](/hackathonstage.JPG)
+![AshwathChandran](/hackathonstage.JPG)
 
-![GIIS Hackathon X](/hackathonsticker1.JPG)
+![AshwathChandran](/hackathonsticker1.JPG)
 
-![GIIS Hackathon X](/hackathonsticker2.JPG)
+![AshwathChandran](/hackathonsticker2.JPG)
 ## Bits&Bytes
 We wanted to do more with our platform, we wanted to truly <i>empower</i> students. So we started where all things start, and had our own Seed Funding Round! (we sold popcorn and profited off the impulsiveness of teenagers)
 
 Now, design-wise, this time I just had to create "postcards", some posters, our official club banner, and another (fire) [reel](https://www.instagram.com/reel/DA-bbZrvaAL/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==).
 
-![bitsandbytes](/bb7.webp)
+![AshwathChandran](/bb7.webp)
 
-![bitsandbytes](/bb2.webp)
+![AshwathChandran](/bb2.webp)
 
-![bitsandbytes](/bb3.webp)
+![AshwathChandran](/bb3.webp)
 
-![bitsandbytes](/bb4.webp)
+![AshwathChandran](/bb4.webp)
 
-![bitsandbytes](/bb5.webp)
+![AshwathChandran](/bb5.webp)
 
-![bitsandbytes](/bb6.webp)
+![AshwathChandran](/bb6.webp)
 
 Oh..WE ALSO RAISED 800 SGD!
 ## You ship, We ship.
@@ -55,38 +55,16 @@ YSWS, otherwise known as "You ship, We ship," was one of our final initiatives. 
 
 Now design-wise since this was a virtual initiative, all I had to do was get the word out. One way I did this was through an [Instagram post](https://www.instagram.com/p/DBLR5DuPFpT/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
 
-We also made these posters featuring my good friend Mayush. (don't search up yourwebsite.giistech.club).
+I also made these posters featuring my good friend Mayush. (don't search up yourwebsite.giistech.club).
 
-![ysws](/yswsposter.png)
+![AshwathChandran](/yswsposter.png)
 
 ## Jackets
-All pages under 100kb (including fonts)
+I just HAD to mention our official club jackets. This was my first time designing a varsity jacket, and I think it ended up pretty well.
 
-## ⚡︎ Fast
-Rendered in ~40ms on localhost
+![AshwathChandran](/tcjacket.png)
 
-## 📄 Configuration
+## Conclusion of sorts
+GIIS Tech Club will always hold a special place in my memories, and I'm so beyond fulfilled with all the things we were able to accomplish and all the people we were able to positively impact. Of course, there are a lot of things I did that I hadn't mentioned (like basically 99% of our social media, for instance); honestly, I just got kind of tired of updating the index.md file for this. Anyways, if you're interested, check out @giistechclub on Instagram.
 
-The blog posts on the demo serve as the documentation and configuration.
-
-## 💻 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-Replace npm with your package manager of choice. `npm`, `pnpm`, `yarn`, `bun`, etc
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run sync`            | Generates TypeScript types for all Astro modules.|
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-| `npm run lint`            | Run ESLint                                       |
-| `npm run lint:fix`        | Auto-fix ESLint issues                           |
-
-## 🏛️ License
-
-MIT
+<i>Hey there! I’m Ashwath Chandran, an 18-year-old student from Singapore. I’m super passionate about programming, robotics, graphic design, and photography. I also love learning about space, economics, history, and sometimes even getting into deep philosophical questions. I’m pretty familiar with the Adobe Suite and languages like Python, JavaScript, HTML, C#, and C++. I’m always learning and growing, and I’m excited to see where this computer science journey takes me. This platform is my space to share my thoughts and experiences with you all.</i>
