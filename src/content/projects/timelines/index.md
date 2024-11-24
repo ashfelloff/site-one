@@ -7,7 +7,9 @@ date: "Nov 24 2024"
 Yesterday was the first day of Counterspell; it was also the first time I actually learned how to use Pygame. Now, after roughly 3 hours of work, I present to you Timelines. 
 ## Timelines
 ![tl](/tl1.png)
+
 ![tl](/tl2.png)
+
 ![tl](/tl3.png)
 
 The initial idea for timelines was to have two windows pop up when you run the file, one being the game, which is a platformer inspired by the genre, and the other being an interactive window where we're able to see the thoughts of the character as he experiences the levels with you. The whole premise for the story is that he's a wanderer at the end of time, running from the consequences of his own actions, which leads to a collapse of his timeline; he hopes that if he makes it to the very end of time, he'd seize to exist therefore undoing the damage he's caused and restoring his timeline. 
