@@ -124,8 +124,6 @@ def text_display():
     pygame.quit()
     sys.exit()
 
-text_process = multiprocessing.Process(target=text_display)
-text_process.start()
 ```
 
 
