@@ -20,7 +20,7 @@ However, since we split up the work within our team, we ran into a series of iss
 On behalf of my team, I hope you enjoy it and consider voting for us. This was a gratifying experience; a little more than 24 hours ago, I didn't have the slightest clue about Pygame, and now to have written over 500 lines and created a whole game is such an amazing feeling. 
 
 Just wanna mention our initial code for the second window that didn't end up working since my teammate put real effort into it.
-`
+```python
 # List of texts to display
 texts = [
     "I jump, not to survive, but to delay the inevitable.",
@@ -126,6 +126,6 @@ def text_display():
 
 text_process = multiprocessing.Process(target=text_display)
 text_process.start()
-`
+```
 
 
