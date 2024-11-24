@@ -1,70 +1,170 @@
 ---
-title: "Designing a Platform To Empower Youth Through Technology."
-description: "An overview of my work as Head of Design for GIIS Tech Club."
-date: "Nov 1 2024"
+title: "You are your worst enemy. Timelines for Counterspell Singapore"
+description: "Our submission for Counterspell SG"
+date: "Nov 24 2024"
 ---
 
-I started my work as Head of Design for the GIIS Tech Club in December of last year; since then we've become a non-profit organization, partnered with one of the largest banks in Southeast Asia, and empowered hundreds of teenagers to learn and pursue skills in STEM.  
+Yesterday was the first day of Counterspell; it was also the first time I actually learned how to use Pygame. Now, after roughly 3 hours of work, I present to you Timelines. 
+## Timelines
+![tl](/tl1.png)
+![tl](/tl2.png)
+![tl](/tl3.png)
 
-This is essentially an archive of our brand.
-## GIIS Hackathon X
-After six months of hard work and countless hours of reiteration, Hackathon X finally materialized. Our Hackathon was generously sponsored by DBS Singapore, Hack Club, and Wolfram Alpha, making it completely free for all students and significantly increasing its accessibility. Despite being free, <b>we didn’t compromise</b> on anything. We set the bar so high that future iterations of GIIS Tech Club may not even come close to matching our achievements. From merchandise and delicious food to prizes, film cameras, a photo booth, various consoles, and even two massive Mario Kart arcade machines, we had everything.
+The initial idea for timelines was to have two windows pop up when you run the file, one being the game, which is a platformer inspired by the genre, and the other being an interactive window where we're able to see the thoughts of the character as he experiences the levels with you. The whole premise for the story is that he's a wanderer at the end of time, running from the consequences of his own actions, which leads to a collapse of his timeline; he hopes that if he makes it to the very end of time, he'd seize to exist therefore undoing the damage he's caused and restoring his timeline. 
 
-As for the Design side of things, I personally created the following:
-- Hackathon X t-shirts
-- Lanyards and PVCs
-- Stickers!
-- Stage Graphics and Design
-- Posters (as well as a NFC photosystem that showed participants their pictures live as the event went on)
+However, since we split up the work within our team, we ran into a series of issues when we tried to Frankenstein it all together, and unfortunately, we weren't able to ship our whole game in time. <b>HOWEVER,</b> our primary platformer is fully functional and you can try it out by downloading the following [repo](https://github.com/ashfelloff/timelines/tree/main), and running it on your IDE. Make sure you have the necessary packages for Python 3 and Pygame!
+`pip3 install pygame`
 
- Additionally, I also made content for our social media. (This [reel](https://www.instagram.com/reel/C99zJphvfSC/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==) for instance)
+On behalf of my team, I hope you enjoy it and consider voting for us. This was a gratifying experience; a little more than 24 hours ago, I didn't have the slightest clue about Pygame, and now to have written over 500 lines and created a whole game is such an amazing feeling. 
 
-![GIIS Hackathon X](/hackathonmain.JPG)
+Just wanna mention our initial code for the second window that didn't end up working since my teammate put real effort into it.
+`
+mixer.init()
+mixer.music.load('backgroundmusic/1.mp3')
+mixer.music.play()
 
-![GIIS Hackathon X](/hackathonaura.JPG)
+clock = pygame.time.Clock()
+font = pygame.font.SysFont('Bauhaus 93', 70)
+font_score = pygame.font.SysFont('Bauhaus 93', 30)
 
-![GIIS Hackathon X](/hackathonfilmsticker.png)
+fps = 60
 
-![AshwathChandran](/hackathongroup.JPG)
+#game window
 
-![AshwathChandran](/hackathonstage.JPG)
+screen_width = 750
+screen_height = 750  
 
-![AshwathChandran](/hackathonsticker1.JPG)
+player = pygame.Rect((300, 250, 50, 50))
 
-![AshwathChandran](/hackathonsticker2.JPG)
-## Bits&Bytes
-We wanted to do more with our platform, we wanted to truly <i>empower</i>  students. So we started where all things start, and had our own Seed Funding Round! (we sold popcorn and profited off the impulsiveness of teenagers)
+screen = pygame.display.set_mode((screen_width, screen_height))
 
-Now, design-wise, this time I just had to create "postcards", some posters, our official club banner, and another (fire) [reel](https://www.instagram.com/reel/DA-bbZrvaAL/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==).
+pygame.display.set_caption('Timelines')
 
-![AshwathChandran](/bb7.webp)
+tile_size = 37.5
+game_over = 0
+main_menu = True
+level = 0
+max_levels = 11
+score = 0
 
-![AshwathChandran](/bb2.webp)
+white = (255, 255, 255)
+blue = (12, 44, 60)
 
-![AshwathChandran](/bb3.webp)
+#image loader COME BACK
+bg_img = pygame.image.load('img/wall.png')
+restart_img = pygame.image.load('img/restart_btn.png')
+start_img = pygame.image.load('img/start_btn.png')
+exit_img = pygame.image.load('img/exit_btn.png')
 
-![AshwathChandran](/bb4.webp)
+# Define colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
 
-![AshwathChandran](/bb5.webp)
+# List of texts to display
+texts = [
+    "I jump, not to survive, but to delay the inevitable.",
+    "Every rooftop feels like another fleeting lie of safety.",
+    "The world crumbles beneath me as I cling to what’s left.",
+    "Each leap is a gamble I no longer care to win.",
+    "The sky watches indifferently as I defy its pull.",
+    "I run, not to escape, but to avoid standing still.",
+    "Every handhold mocks me, questioning why I bother.",
+    "My body moves forward; my mind stays trapped in the past.",
+    "The horizon fades faster than my hope ever could.",
+    "Each step forward feels like two steps closer to nowhere.",
+    "The apocalypse chases me, but I’ve been running my whole life.",
+    "I vault over ruins, the same way I avoid my reflection.",
+    "Every move reminds me how fragile this existence really is.",
+    "The sound of my breath echoes louder than my will to live.",
+    "I scale walls built by those who never saw this coming.",
+    "Each fall feels more inviting than the ground I leave behind.",
+    "The teleporter looms ahead, a hollow promise of salvation.",
+    "I’m not running toward life; I’m running away from memories.",
+    "Every obstacle feels personal, as if the world knows my sins.",
+    "I survive, but survival feels like the cruelest punishment.",
+    "The ground shakes, but it’s nothing compared to my own instability.",
+    "My shadow keeps up, the only constant in this collapse.",
+    "I push forward because stopping feels too familiar.",
+    "Each ledge I grab feels colder than the void inside me.",
+    "I dodge falling debris, but not the thoughts that haunt me.",
+    "Every heartbeat feels borrowed, as if I don’t deserve it.",
+    "I land, not with triumph, but with the weight of failure.",
+    "The world burns around me, but I’ve been scorched for years.",
+    "I move forward because turning back is no longer an option.",
+    "Every successful jump is another reminder I’m still here.",
+    "I sprint toward the future, but it feels like a dead end.",
+    "The wind carries me forward, as if it knows I can’t stop.",
+    "Each wall I climb feels steeper than the last, like my regrets.",
+    "The stars disappear, but I’ve grown used to the darkness.",
+    "Every calculated move hides the chaos in my mind.",
+    "The teleporter hums ahead, indifferent to my hesitation.",
+    "Every misstep feels deliberate, like my subconscious wants me to fail.",
+    "I leap across the void, a metaphor I wish I didn’t understand.",
+    "The closer I get to escape, the heavier my body feels.",
+    "I navigate destruction, wondering if it mirrors what’s inside me."
+]
 
-![AshwathChandran](/bb6.webp)
+# Function to display text one letter at a time
+def display_text(screen, font, text, y_pos):
+    displayed_text = ""
+    for char in text:
+        displayed_text += char
+        text_surf = font.render(displayed_text, True, BLACK)
+        text_rect = text_surf.get_rect(topleft=(50, y_pos))
+        screen.blit(text_surf, text_rect)
+        pygame.display.flip()
+        time.sleep(0.1)  # Adjust the speed of the animation here
 
-Oh..WE ALSO RAISED 800 SGD!
-## You ship, We ship.
-YSWS, otherwise known as "You ship, We ship," was one of our final initiatives. We encouraged students in our school to program and build their own website, and we offered to pay for their domains! Through YSWS, you could either meet some basic prerequisites and be eligible to receive your own custom domain, paid for by us; or you could get a fun, completely accessible-to-all giistech.club subdomain. This was all done through GitHub, and you can check out the [repo](https://github.com/emergenitro/ysws-domain) yourself. (shoutout our amazing secretary Karthik Sankar!)
+# Function to run the text display on a second display
+def text_display():
+    screen = pygame.display.set_mode((800, 600))
+    pygame.display.set_caption("Stacking Text Display")
 
-Now design-wise since this was a virtual initiative, all I had to do was get the word out. One way I did this was through an [Instagram post](https://www.instagram.com/p/DBLR5DuPFpT/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
+    # Set up game clock
+    clock = pygame.time.Clock()
 
-I also made these posters featuring my good friend Mayush. (don't search up yourwebsite.giistech.club).
+    # Main game loop
+    running = True
+    last_text_time = time.time()
+    interval = random.randint(5, 6)
+    font = pygame.font.Font(None, 36)
+    y_pos = 50
+    displayed_texts = []
 
-![AshwathChandran](/yswsposter.png)
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
 
-## Jackets
-I just HAD to mention our official club jackets. This was my first time designing a varsity jacket, and I think it ended up pretty well.
+        # Check if it's time to display a new text
+        current_time = time.time()
+        if current_time - last_text_time >= interval:
+            text = random.choice(texts)
+            displayed_texts.append((text, y_pos))
+            y_pos += 40  # Move the next text down
+            last_text_time = current_time
+            interval = random.randint(5, 6)
 
-![AshwathChandran](/tcjacket.png)
+        # Clear the screen
+        screen.fill(WHITE)
 
-## Conclusion of sorts
-GIIS Tech Club will always hold a special place in my memories, and I'm so beyond fulfilled with all the things we were able to accomplish and all the people we were able to positively impact. Of course, there are a lot of things I did that I hadn't mentioned (like basically 99% of our social media, for instance); honestly, I just got kind of tired of updating the index.md file for this. Anyways, if you're interested, check out @giistechclub on Instagram.
+        # Display all texts
+        for text, pos in displayed_texts:
+            text_surf = font.render(text, True, BLACK)
+            text_rect = text_surf.get_rect(topleft=(50, pos))
+            screen.blit(text_surf, text_rect)
 
-<i>Hey there! I’m Ashwath Chandran, an 18-year-old student from Singapore. I’m super passionate about programming, robotics, graphic design, and photography. I also love learning about space, economics, history, and sometimes even getting into deep philosophical questions. I’m pretty familiar with the Adobe Suite and languages like Python, JavaScript, HTML, C#, and C++. I’m always learning and growing, and this platform is my space to share my thoughts and experiences with you all.</i>
+        # Update the display
+        pygame.display.flip()
+
+        # Cap the frame rate
+        clock.tick(30)
+
+    pygame.quit()
+    sys.exit()
+
+text_process = multiprocessing.Process(target=text_display)
+text_process.start()
+`
+
+
