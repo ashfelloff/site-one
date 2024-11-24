@@ -19,47 +19,6 @@ On behalf of my team, I hope you enjoy it and consider voting for us. This was a
 
 Just wanna mention our initial code for the second window that didn't end up working since my teammate put real effort into it.
 `
-mixer.init()
-mixer.music.load('backgroundmusic/1.mp3')
-mixer.music.play()
-
-clock = pygame.time.Clock()
-font = pygame.font.SysFont('Bauhaus 93', 70)
-font_score = pygame.font.SysFont('Bauhaus 93', 30)
-
-fps = 60
-
-#game window
-
-screen_width = 750
-screen_height = 750  
-
-player = pygame.Rect((300, 250, 50, 50))
-
-screen = pygame.display.set_mode((screen_width, screen_height))
-
-pygame.display.set_caption('Timelines')
-
-tile_size = 37.5
-game_over = 0
-main_menu = True
-level = 0
-max_levels = 11
-score = 0
-
-white = (255, 255, 255)
-blue = (12, 44, 60)
-
-#image loader COME BACK
-bg_img = pygame.image.load('img/wall.png')
-restart_img = pygame.image.load('img/restart_btn.png')
-start_img = pygame.image.load('img/start_btn.png')
-exit_img = pygame.image.load('img/exit_btn.png')
-
-# Define colors
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-
 # List of texts to display
 texts = [
     "I jump, not to survive, but to delay the inevitable.",
