@@ -5,16 +5,12 @@ import Link from "@components/Link.astro";
 
 <header id="site-header" class="fixed top-0 left-0 w-full z-[300] transition-all duration-500 ease-in-out py-6">
   <Container>
-    <div id="header-inner" class="relative flex flex-wrap gap-y-2 justify-between items-center transition-all duration-500 ease-in-out max-w-full">
-      <!-- Centered Anchor Pulse -->
-      <div class="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 pointer-events-none">
-        <span class="animate-pulse opacity-50 font-medium text-white">|</span>
-      </div>
-
-      <div id="wordmark-wrapper" class="transition-all duration-500 ease-in-out origin-left flex items-center">
+    <div id="header-inner" class="flex flex-wrap gap-y-2 justify-between items-center transition-all duration-500 ease-in-out max-w-full overflow-hidden">
+      <div id="wordmark-wrapper" class="transition-all duration-500 ease-in-out origin-left flex-shrink-0">
         <Link href="/" underline={false}>
-          <div id="wordmark-container" class="group flex items-center min-w-[80px] font-medium" style="font-family: 'Druk Wide', sans-serif;">
-            <span class="inline-block translate-y-[0.05em]">✱</span>a<span id="wordmark" class="ml-2">c</span>
+          <div id="wordmark-container" class="group flex items-center font-medium whitespace-nowrap" style="font-family: 'Druk Wide', sans-serif;">
+            <span class="inline-block translate-y-[0.05em]">✱</span>a<span id="wordmark">c</span>
+            <span class="animate-pulse ml-0.5 opacity-50 group-hover:opacity-0 transition-opacity duration-300">|</span>
           </div>
         </Link>
       </div>
@@ -41,9 +37,10 @@ import Link from "@components/Link.astro";
 </header>
 
 <style>
-  #site-header.lightbox-open {
-    opacity: 0;
-    pointer-events: none;
+  #site-header {
+    background-color: transparent;
+    backdrop-filter: blur(0px);
+    border-bottom: 1px solid transparent;
   }
 
   #site-header.scrolled {
@@ -68,7 +65,7 @@ import Link from "@components/Link.astro";
   /* Desktop specific center telescoping */
   @media (min-width: 768px) {
     #site-header.scrolled #nav-menu {
-      transform: translateX(-40px); /* Adjusted for centered anchor pulse */
+      transform: translateX(-65px); /* Perfectly balanced for the hidden wordmark */
     }
   }
 </style>

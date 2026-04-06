@@ -120,14 +120,6 @@ const formatDate = (date: Date) => {
     <div class="relative w-full flex flex-col items-center justify-center px-4 -mt-10 md:mt-0">
       <div class="relative max-w-6xl w-full flex justify-center">
         <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[45vh] md:max-h-[70vh] object-contain shadow-2xl transition-opacity duration-150" />
-        
-        <!-- Desktop Nav Arrows: Moved inside viewport to prevent clipping -->
-        <button id="prev-photo" class="hidden md:flex fixed left-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-all p-8 bg-white/5 hover:bg-white/10 backdrop-blur-2xl rounded-full border border-white/10 shadow-2xl items-center justify-center group z-[230]">
-          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:scale-110 transition-transform"><polyline points="15 18 9 12 15 6"></polyline></svg>
-        </button>
-        <button id="next-photo" class="hidden md:block fixed right-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-all p-8 bg-white/5 hover:bg-white/10 backdrop-blur-2xl rounded-full border border-white/10 shadow-2xl items-center justify-center group z-[230]">
-          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:scale-110 transition-transform"><polyline points="9 18 15 12 9 6"></polyline></svg>
-        </button>
       </div>
 
       <!-- Integrated Switcher (Below Image) - Now Desktop & Mobile -->
@@ -217,8 +209,6 @@ const formatDate = (date: Date) => {
     
     // Buttons
     const closeBtn = document.getElementById('close-lightbox');
-    const prevBtn = document.getElementById('prev-photo');
-    const nextBtn = document.getElementById('next-photo');
     const mPrev = document.getElementById('mobile-prev');
     const mNext = document.getElementById('mobile-next');
     
@@ -279,8 +269,6 @@ const formatDate = (date: Date) => {
     function next() { if (currentIndex < photoData.length - 1) updateLightbox(currentIndex + 1, true); }
     function prev() { if (currentIndex > 0) updateLightbox(currentIndex - 1, true); }
 
-    prevBtn?.addEventListener('click', prev);
-    nextBtn?.addEventListener('click', next);
     mPrev?.addEventListener('click', prev);
     mNext?.addEventListener('click', next);
 
