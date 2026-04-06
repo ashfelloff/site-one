@@ -11,6 +11,7 @@ interface Photo {
   image: ImageMetadata;
   date: Date;
   location: string;
+  coords: string;
   tech: {
     device: string;
     lens: string;
@@ -20,6 +21,31 @@ interface Photo {
     reso: string;
   };
   id: string;
+}
+
+// Simple cache for geocoding to avoid rate limits
+const locationCache = new Map<string, string>();
+
+async function getFriendlyLocation(lat: number, lon: number): Promise<string> {
+  const roundedLat = lat.toFixed(2);
+  const roundedLon = lon.toFixed(2);
+  const key = `${roundedLat},${roundedLon}`;
+  
+  if (locationCache.has(key)) return locationCache.get(key) || key;
+  
+  try {
+    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=en`, {
+      headers: { 'User-Agent': 'PersonalSite/1.0 (contact: ashwxth@gmail.com)' }
+    });
+    const data = await response.json();
+    const city = data.address.city || data.address.town || data.address.village || data.address.suburb || "";
+    const country = data.address.country || "";
+    const result = city ? `${city}, ${country}` : country || key;
+    locationCache.set(key, result);
+    return result;
+  } catch (e) {
+    return key;
+  }
 }
 
 // Get all images from src/assets/gallery/
@@ -34,25 +60,25 @@ const photos: Photo[] = await Promise.all(
     try {
       const buffer = fs.readFileSync(absolutePath);
       metadata = await exifr.parse(buffer);
-    } catch (e) {
-      // Handle missing EXIF gracefully
-    }
+    } catch (e) {}
 
-    // Capture Date: Use EXIF, fallback to file creation date
     const date = metadata?.DateTimeOriginal || fs.statSync(absolutePath).birthtime || new Date();
     
-    // Technical Metadata
     const device = metadata?.Model ? `${metadata.Make || ''} ${metadata.Model}`.trim() : "";
-    const lens = metadata?.LensModel || "";
+    const lensRaw = metadata?.LensModel || "";
+    // Clean up long lens names
+    const lens = lensRaw.length > 30 ? lensRaw.split(' ').slice(0, 5).join(' ') + "..." : lensRaw;
+    
     const iso = metadata?.ISO ? `ISO ${metadata.ISO}` : "";
-    const aperture = metadata?.FNumber ? `f/${metadata.FNumber}` : "";
+    const aperture = metadata?.FNumber ? `f/${Number(metadata.FNumber).toFixed(2)}` : "";
     const exposure = metadata?.ExposureTime ? (metadata.ExposureTime < 1 ? `1/${Math.round(1/metadata.ExposureTime)}` : `${metadata.ExposureTime}s`) : "";
     const resolution = `${image.width} × ${image.height}`;
 
-    // Location Fallback
     let location = "";
+    let coords = "";
     if (metadata?.latitude && metadata?.longitude) {
-      location = `${metadata.latitude.toFixed(2)}, ${metadata.longitude.toFixed(2)}`;
+      coords = `${metadata.latitude.toFixed(2)}, ${metadata.longitude.toFixed(2)}`;
+      location = await getFriendlyLocation(metadata.latitude, metadata.longitude);
     } else {
       const basename = path.basename(filepath, path.extname(filepath));
       location = basename
@@ -65,9 +91,10 @@ const photos: Photo[] = await Promise.all(
       image,
       date,
       location,
+      coords,
       tech: {
         device,
-        lens,
+        lens: lens || "Native",
         iso,
         f: aperture,
         shutter: exposure,
@@ -78,7 +105,7 @@ const photos: Photo[] = await Promise.all(
   })
 );
 
-photos.sort((a: Photo, b: Photo) => b.date.valueOf() - a.date.valueOf());
+photos.sort((a, b) => b.date.valueOf() - a.date.valueOf());
 
 const formatDate = (date: Date) => {
   return Intl.DateTimeFormat("en-US", {
@@ -108,6 +135,7 @@ const formatDate = (date: Date) => {
               data-photo={JSON.stringify({
                 src: photo.image.src,
                 location: photo.location,
+                coords: photo.coords,
                 date: formatDate(photo.date),
                 tech: photo.tech
               })}
@@ -131,57 +159,76 @@ const formatDate = (date: Date) => {
 
   <!-- Lightbox Overlay -->
   <div id="lightbox" class="fixed inset-0 z-[100] bg-black/98 opacity-0 pointer-events-none transition-opacity duration-300 flex flex-col items-center justify-center p-4">
+    <!-- Close -->
     <button id="close-lightbox" class="absolute top-6 right-6 text-white/50 hover:text-white z-[110] transition-colors">
       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </button>
     
-    <button id="prev-photo" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 hover:text-white z-[110] p-4 transition-all">
+    <!-- Controls -->
+    <button id="prev-photo" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white z-[110] p-4 transition-all">
       <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
     </button>
     
-    <button id="next-photo" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/30 hover:text-white z-[110] p-4 transition-all">
+    <button id="next-photo" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white z-[110] p-4 transition-all">
       <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
     </button>
 
-    <div class="relative max-w-6xl w-full h-[75vh] flex items-center justify-center">
-      <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full object-contain" />
+    <!-- Main Content -->
+    <div class="relative max-w-6xl w-full h-[70vh] flex items-center justify-center">
+      <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full object-contain shadow-2xl rounded-sm" />
     </div>
     
-    <div class="mt-8 w-full max-w-4xl px-6">
-      <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-6">
-        <div class="text-center md:text-left space-y-1">
-          <p id="lb-location" class="text-white text-xl font-medium tracking-tight"></p>
-          <p id="lb-date" class="text-white/40 text-sm"></p>
+    <!-- Redesigned Technical Info Bar -->
+    <div class="mt-12 w-full max-w-5xl px-6 pb-8">
+      <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-x-12 gap-y-10">
+        
+        <!-- Left: Branding & Location -->
+        <div class="flex items-end gap-x-8 border-l border-white/10 pl-8">
+          <div class="text-center md:text-left space-y-1">
+             <p id="lb-location" class="text-white text-xl md:text-2xl font-medium tracking-tight mb-1"></p>
+             <div class="flex items-center gap-3 text-white/30 text-xs font-mono">
+                <span id="lb-coords"></span>
+                <span class="opacity-20">|</span>
+                <span id="lb-date"></span>
+             </div>
+          </div>
         </div>
         
-        <div class="flex flex-wrap justify-center md:justify-end items-center gap-x-6 gap-y-2 text-[10px] uppercase tracking-[0.2em] text-white/30 font-semibold border-t md:border-t-0 md:border-l border-white/10 pt-4 md:pt-0 md:pl-8">
-          <div class="flex flex-col gap-1">
-            <span class="text-white/50 text-[9px]">Camera</span>
-            <span id="lb-device" class="text-white/80"></span>
+        <!-- Right: Technical Details Grid -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:items-end gap-x-8 gap-y-6 text-[10px] uppercase tracking-[0.25em] text-white/30 font-semibold w-full md:w-auto">
+          
+          <div class="flex flex-col gap-1.5 min-w-[120px]">
+             <span class="text-white/50 text-[9px] tracking-widest opacity-80">Device</span>
+             <span id="lb-device" class="text-white/80 leading-tight"></span>
           </div>
-          <div class="flex flex-col gap-1">
-            <span class="text-white/50 text-[9px]">Lens</span>
-            <span id="lb-lens" class="text-white/80"></span>
+
+          <div class="flex flex-col gap-1.5 min-w-[140px] max-w-[200px]">
+             <span class="text-white/50 text-[9px] tracking-widest opacity-80">Optics</span>
+             <span id="lb-lens" class="text-white/80 leading-tight truncate"></span>
           </div>
-          <div id="lb-specs" class="flex gap-4 border-l border-white/5 pl-6 ml-2">
-             <div class="flex flex-col gap-1">
-                <span class="text-white/50 text-[9px]">Exp</span>
-                <span id="lb-shutter"></span>
-             </div>
-             <div class="flex flex-col gap-1">
-                <span class="text-white/50 text-[9px]">Ap</span>
-                <span id="lb-f"></span>
-             </div>
-             <div class="flex flex-col gap-1">
-                <span class="text-white/50 text-[9px]">ISO</span>
-                <span id="lb-iso"></span>
-             </div>
+
+          <div class="flex items-end gap-8 border-l border-white/5 pl-8">
+            <div class="flex flex-col gap-1.5">
+               <span class="text-white/50 text-[9px] tracking-widest opacity-80">Exp</span>
+               <span id="lb-shutter" class="text-white/80"></span>
+            </div>
+            <div class="flex flex-col gap-1.5">
+               <span class="text-white/50 text-[9px] tracking-widest opacity-80">Ap</span>
+               <span id="lb-f" class="text-white/80"></span>
+            </div>
+            <div class="flex flex-col gap-1.5">
+               <span class="text-white/50 text-[9px] tracking-widest opacity-80">ISO</span>
+               <span id="lb-iso" class="text-white/80"></span>
+            </div>
           </div>
-          <div class="flex flex-col gap-1 border-l border-white/5 pl-6 ml-2">
-            <span class="text-white/50 text-[9px]">Reso</span>
-            <span id="lb-reso" class="text-white/80"></span>
+
+          <div class="flex flex-col gap-1.5 border-l border-white/5 pl-8 ml-auto sm:ml-0">
+             <span class="text-white/50 text-[9px] tracking-widest opacity-80">Output</span>
+             <span id="lb-reso" class="text-white/80"></span>
           </div>
+
         </div>
+
       </div>
     </div>
   </div>
@@ -194,6 +241,7 @@ const formatDate = (date: Date) => {
     const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
     
     const lbLocation = document.getElementById('lb-location');
+    const lbCoords = document.getElementById('lb-coords');
     const lbDate = document.getElementById('lb-date');
     const lbDevice = document.getElementById('lb-device');
     const lbLens = document.getElementById('lb-lens');
@@ -223,13 +271,14 @@ const formatDate = (date: Date) => {
       }, 150);
 
       if (lbLocation) lbLocation.textContent = data.location || "";
+      if (lbCoords) lbCoords.textContent = data.coords || "";
       if (lbDate) lbDate.textContent = data.date || "";
-      if (lbDevice) lbDevice.textContent = data.tech.device || "Unknown";
-      if (lbLens) lbLens.textContent = data.tech.lens || "Native";
+      if (lbDevice) lbDevice.textContent = data.tech.device || "—";
+      if (lbLens) lbLens.textContent = data.tech.lens || "—";
       if (lbShutter) lbShutter.textContent = data.tech.shutter || "—";
       if (lbF) lbF.textContent = data.tech.f || "—";
       if (lbIso) lbIso.textContent = data.tech.iso || "—";
-      if (lbReso) lbReso.textContent = data.tech.reso || "";
+      if (lbReso) lbReso.textContent = data.tech.reso || "—";
       
       if (prevBtn) prevBtn.style.visibility = index === 0 ? "hidden" : "visible";
       if (nextBtn) nextBtn.style.visibility = index === photoData.length - 1 ? "hidden" : "visible";
