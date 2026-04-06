@@ -7,24 +7,39 @@ import exifr from 'exifr';
 import fs from 'node:fs';
 import path from 'node:path';
 
+interface Photo {
+  image: ImageMetadata;
+  date: Date;
+  location: string;
+  tech: {
+    device: string;
+    lens: string;
+    iso: string;
+    f: string;
+    shutter: string;
+    reso: string;
+  };
+  id: string;
+}
+
 // Get all images from src/assets/gallery/
 const imageFiles = import.meta.glob<{ default: ImageMetadata }>("/src/assets/gallery/*.{jpeg,jpg,png,webp}", { eager: true });
 
-const photos = await Promise.all(
+const photos: Photo[] = await Promise.all(
   Object.entries(imageFiles).map(async ([filepath, module]) => {
     const image = module.default;
     const absolutePath = path.resolve(process.cwd(), filepath.startsWith('/') ? filepath.slice(1) : filepath);
     
-    let metadata;
+    let metadata: any;
     try {
       const buffer = fs.readFileSync(absolutePath);
       metadata = await exifr.parse(buffer);
     } catch (e) {
-      // console.warn(`No EXIF for ${filepath}`);
+      // Handle missing EXIF gracefully
     }
 
-    // Capture Date
-    const date = metadata?.DateTimeOriginal || fs.statSync(absolutePath).birthtime;
+    // Capture Date: Use EXIF, fallback to file creation date
+    const date = metadata?.DateTimeOriginal || fs.statSync(absolutePath).birthtime || new Date();
     
     // Technical Metadata
     const device = metadata?.Model ? `${metadata.Make || ''} ${metadata.Model}`.trim() : "";
@@ -63,7 +78,7 @@ const photos = await Promise.all(
   })
 );
 
-photos.sort((a, b) => b.date.valueOf() - a.date.valueOf());
+photos.sort((a: Photo, b: Photo) => b.date.valueOf() - a.date.valueOf());
 
 const formatDate = (date: Date) => {
   return Intl.DateTimeFormat("en-US", {
@@ -116,12 +131,10 @@ const formatDate = (date: Date) => {
 
   <!-- Lightbox Overlay -->
   <div id="lightbox" class="fixed inset-0 z-[100] bg-black/98 opacity-0 pointer-events-none transition-opacity duration-300 flex flex-col items-center justify-center p-4">
-    <!-- Close -->
     <button id="close-lightbox" class="absolute top-6 right-6 text-white/50 hover:text-white z-[110] transition-colors">
       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </button>
     
-    <!-- Controls -->
     <button id="prev-photo" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/30 hover:text-white z-[110] p-4 transition-all">
       <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
     </button>
@@ -130,21 +143,17 @@ const formatDate = (date: Date) => {
       <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
     </button>
 
-    <!-- Main Content -->
     <div class="relative max-w-6xl w-full h-[75vh] flex items-center justify-center">
       <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full object-contain" />
     </div>
     
-    <!-- Technical Info Overlay (Bottom) -->
     <div class="mt-8 w-full max-w-4xl px-6">
       <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-6">
-        <!-- Meta Left: Location & Date -->
         <div class="text-center md:text-left space-y-1">
           <p id="lb-location" class="text-white text-xl font-medium tracking-tight"></p>
           <p id="lb-date" class="text-white/40 text-sm"></p>
         </div>
         
-        <!-- Meta Right: Lens Specs -->
         <div class="flex flex-wrap justify-center md:justify-end items-center gap-x-6 gap-y-2 text-[10px] uppercase tracking-[0.2em] text-white/30 font-semibold border-t md:border-t-0 md:border-l border-white/10 pt-4 md:pt-0 md:pl-8">
           <div class="flex flex-col gap-1">
             <span class="text-white/50 text-[9px]">Camera</span>
@@ -184,7 +193,6 @@ const formatDate = (date: Date) => {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
     
-    // Meta elements
     const lbLocation = document.getElementById('lb-location');
     const lbDate = document.getElementById('lb-date');
     const lbDevice = document.getElementById('lb-device');
@@ -208,18 +216,14 @@ const formatDate = (date: Date) => {
       currentIndex = index;
       const data = photoData[index];
       
-      // Update Image
       lightboxImg.style.opacity = "0";
       setTimeout(() => {
         lightboxImg.src = data.src;
         lightboxImg.style.opacity = "1";
       }, 150);
 
-      // Update Text
       if (lbLocation) lbLocation.textContent = data.location || "";
       if (lbDate) lbDate.textContent = data.date || "";
-      
-      // Update Tech
       if (lbDevice) lbDevice.textContent = data.tech.device || "Unknown";
       if (lbLens) lbLens.textContent = data.tech.lens || "Native";
       if (lbShutter) lbShutter.textContent = data.tech.shutter || "—";
@@ -227,7 +231,6 @@ const formatDate = (date: Date) => {
       if (lbIso) lbIso.textContent = data.tech.iso || "—";
       if (lbReso) lbReso.textContent = data.tech.reso || "";
       
-      // Paging
       if (prevBtn) prevBtn.style.visibility = index === 0 ? "hidden" : "visible";
       if (nextBtn) nextBtn.style.visibility = index === photoData.length - 1 ? "hidden" : "visible";
     }
