@@ -37,10 +37,16 @@ import Link from "@components/Link.astro";
 </header>
 
 <style>
+  #site-header {
+    background-color: transparent;
+    backdrop-filter: blur(0px);
+    border-bottom: 1px solid transparent;
+  }
+
   #site-header.scrolled {
     padding-top: 1rem;
     padding-bottom: 1rem;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   }
@@ -48,7 +54,7 @@ import Link from "@components/Link.astro";
   #site-header.scrolled #wordmark-wrapper {
     opacity: 0;
     max-width: 0;
-    transform: translateX(-20px);
+    transform: translateX(-15px);
     pointer-events: none;
   }
 
@@ -59,7 +65,7 @@ import Link from "@components/Link.astro";
   /* Desktop specific center telescoping */
   @media (min-width: 768px) {
     #site-header.scrolled #nav-menu {
-      transform: translateX(-75px); /* Compensate for the now-hidden wordmark space to align center */
+      transform: translateX(-65px); /* Perfectly balanced for the hidden wordmark */
     }
   }
 </style>
@@ -104,7 +110,6 @@ import Link from "@components/Link.astro";
       const currentWord = words[wordIndex];
       const nextWord = words[(wordIndex + 1) % words.length];
       
-      // Calculate common prefix to avoid deleting shared parts
       let commonPrefix = "";
       for (let i = 0; i < Math.min(currentWord.length, nextWord.length); i++) {
         if (currentWord[i] === nextWord[i]) {
@@ -128,17 +133,16 @@ import Link from "@components/Link.astro";
 
       if (!isDeleting && charIndex === currentWord.length) {
         isDeleting = true;
-        typeSpeed = 5000; // wait at the end
+        typeSpeed = 5000; 
       } else if (isDeleting && charIndex === commonPrefix.length) {
         isDeleting = false;
         wordIndex = (wordIndex + 1) % words.length;
-        typeSpeed = 500; // wait before new word
+        typeSpeed = 500; 
       }
 
       setTimeout(type, typeSpeed);
     }
 
-    // Handle initial wait
     setTimeout(type, 3000);
   }
 

@@ -21,7 +21,9 @@ interface Photo {
     reso: string;
   };
   id: string;
-}// Simplification: Locations now use raw GPS coordinates strictly
+}
+
+// Simplification: Locations now use raw GPS coordinates strictly
 async function getFriendlyLocation(lat: number, lon: number): Promise<string> {
   return `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
 }
@@ -142,15 +144,14 @@ const formatDate = (date: Date) => {
       </div>
     </div>
     
-    <!-- Info Section: No longer blocked by floating nav -->
+    <!-- Info Section: Cleaned duplicate GPS -->
     <div class="w-full max-w-5xl px-8 pb-32 pt-12 md:pt-16 bg-black">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-x-12 gap-y-12">
         
         <!-- Details Column -->
         <div class="space-y-4 max-w-xl pr-4">
-           <h2 id="lb-location" class="text-white text-2xl md:text-3xl font-medium tracking-tight leading-tight"></h2>
+           <h2 id="lb-location" class="text-white text-2xl md:text-3xl font-medium tracking-tight"></h2>
            <div class="flex items-center gap-4 text-white/30 text-[10px] md:text-xs font-mono uppercase tracking-[0.3em]">
-             <span id="lb-coords" class="hidden sm:inline"></span>
              <span id="lb-date"></span>
            </div>
         </div>
@@ -162,7 +163,7 @@ const formatDate = (date: Date) => {
                <span class="text-white/20 text-[9px] uppercase tracking-[0.4em] font-bold">Gear</span>
                <div class="space-y-1">
                   <p id="lb-device" class="text-white/80 text-[11px] uppercase tracking-wide"></p>
-                  <p id="lb-lens" class="text-white/30 text-[9px] uppercase tracking-wider max-w-[160px] truncate"></p>
+                  <p id="lb-lens" class="text-white/30 text-[9px] uppercase tracking-wider max-w-[140px] truncate"></p>
                </div>
             </div>
             
@@ -204,7 +205,6 @@ const formatDate = (date: Date) => {
     
     // Meta hooks
     const lbLocation = document.getElementById('lb-location');
-    const lbCoords = document.getElementById('lb-coords');
     const lbDate = document.getElementById('lb-date');
     const lbDevice = document.getElementById('lb-device');
     const lbLens = document.getElementById('lb-lens');
@@ -251,7 +251,6 @@ const formatDate = (date: Date) => {
       if (index - 1 >= 0) preloadImage(photoData[index - 1].src);
 
       if (lbLocation) lbLocation.textContent = data.location || "";
-      if (lbCoords) lbCoords.textContent = data.coords || "—";
       if (lbDate) lbDate.textContent = data.date || "—";
       if (lbDevice) lbDevice.textContent = data.tech.device || "—";
       if (lbLens) lbLens.textContent = data.tech.lens || "—";
