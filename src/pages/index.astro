@@ -1,0 +1,122 @@
+---
+import Container from "@components/Container.astro";
+import PageLayout from "@layouts/PageLayout.astro";
+import Link from "@components/Link.astro";
+import { SITE, HOME, SOCIALS } from "@consts";
+---
+
+<PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
+  <Container>
+    <div class="space-y-10">
+      <section class="animate">
+        <article class="space-y-4">
+          <p>
+            i'm <span id="anim-name-box">ashwath ch</span><span id="anim-name-static">andran</span>, i like to create things.
+          </p>
+          <p>
+            you can find me on random sidequests whether it be playing hide &
+            seek across a country or helping run a hackathon for teens (did that
+            twice).
+          </p>
+          <p>
+            i often find myself figuring out who i am and what that means. alot
+            of the time it seems like i know nothing and want to do everything!!
+          </p>
+          <p>
+            one thing that’s abundantly clear to me is that lifes too short and
+            i want to experience as much of it as i can!
+          </p>
+          <p>
+            this drive really pushes me to learn across different teams and
+            mediums, all in pursuit of a new hobby worth pursuing.
+          </p>
+        </article>
+      </section>
+
+      <section class="animate">
+        <div class="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
+          {
+            SOCIALS.map((SOCIAL, i) => (
+              <>
+                <Link
+                  href={SOCIAL.HREF}
+                  external
+                  aria-label={`${SITE.NAME} on ${SOCIAL.NAME}`}
+                >
+                  {SOCIAL.NAME}
+                </Link>
+                <span class="opacity-30">/</span>
+              </>
+            ))
+          }
+          <Link href={`mailto:${SITE.EMAIL}`} aria-label={`Email ${SITE.NAME}`}>
+            email
+          </Link>
+        </div>
+      </section>
+    </div>
+  </Container>
+</PageLayout>
+
+<script>
+  function initNameAnimation() {
+    const boxElement = document.getElementById("anim-name-box");
+    const staticElement = document.getElementById("anim-name-static");
+    if (!boxElement || !staticElement) return;
+
+    // Reset to initial state
+    boxElement.textContent = "ashwath ch";
+    boxElement.style.backgroundColor = "transparent";
+    boxElement.style.backdropFilter = "none";
+    boxElement.style.border = "1px solid transparent";
+    boxElement.style.color = "";
+    boxElement.style.padding = "0";
+    boxElement.style.transition = "all 0.4s ease-in-out";
+
+    setTimeout(() => {
+      boxElement.style.opacity = "0";
+      setTimeout(() => {
+        // Use innerHTML to style parentheses separately
+        boxElement.innerHTML = `<span class="paren-part">(</span>ashwath.ch<span class="paren-part">)</span>`;
+        const parens = boxElement.querySelectorAll(".paren-part");
+        
+        // Initial highlight state
+        boxElement.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
+        boxElement.style.backdropFilter = "blur(8px)";
+        boxElement.style.border = "1px solid rgba(255, 255, 255, 0.2)";
+        boxElement.style.color = "white";
+        boxElement.style.padding = "0 3px";
+        boxElement.style.borderRadius = "4px";
+        boxElement.style.opacity = "1";
+
+        // Parentheses are transparent during highlight (perfect blend)
+        parens.forEach(p => {
+          (p as HTMLElement).style.color = "transparent";
+          (p as HTMLElement).style.transition = "color 1s ease-in-out";
+        });
+        
+        // Step 1: Box fades, Parens become subtle
+        setTimeout(() => {
+          boxElement.style.backgroundColor = "transparent";
+          boxElement.style.backdropFilter = "none";
+          boxElement.style.border = "1px solid transparent";
+          boxElement.style.padding = "0";
+          
+          parens.forEach(p => {
+            (p as HTMLElement).style.color = "rgba(255, 255, 255, 0.4)";
+          });
+
+          // Step 2: Final reveal to full white after 2 more seconds
+          setTimeout(() => {
+            parens.forEach(p => {
+              (p as HTMLElement).style.color = "white";
+            });
+          }, 2000);
+
+        }, 1500);
+      }, 300);
+    }, 3000);
+  }
+
+  document.addEventListener("astro:page-load", initNameAnimation);
+</script>

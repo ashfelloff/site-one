@@ -1,0 +1,100 @@
+---
+import Container from "@components/Container.astro";
+import Link from "@components/Link.astro";
+import { SITE } from "@consts";
+---
+
+<header>
+  <Container>
+    <div class="flex flex-wrap gap-y-2 justify-between">
+      <Link href="/" underline={false}>
+        <div id="wordmark-container" class="group flex items-center min-w-[150px] font-medium" style="font-family: 'Druk Wide', sans-serif;">
+          <span class="inline-block translate-y-[0.05em]">✱</span>a<span id="wordmark">c</span>
+          <span class="animate-pulse ml-0.5 opacity-50 group-hover:opacity-0 transition-opacity duration-300">|</span>
+        </div>
+      </Link>
+      <nav class="flex gap-1">
+        <Link href="/blog">
+          blog
+        </Link>
+        <span>
+          {`/`}
+        </span>
+        <Link href="/work">
+          work
+        </Link>
+        <span>
+          {`/`}
+        </span>
+        <Link href="/projects">
+          projects
+        </Link>
+      </nav>
+    </div>
+  </Container>
+</header>
+
+<script>
+  function initHeaderWordmark() {
+    const words = ["c", "shfelloff", "shvoided"];
+    let wordIndex = 0;
+    let charIndex = words[wordIndex].length;
+    let isDeleting = true;
+    let isPaused = false;
+    const element = document.getElementById("wordmark");
+    const container = document.getElementById("wordmark-container");
+
+    if (container) {
+      container.addEventListener("mouseenter", () => isPaused = true);
+      container.addEventListener("mouseleave", () => isPaused = false);
+    }
+
+    function type() {
+      if (isPaused) {
+        setTimeout(type, 100);
+        return;
+      }
+
+      const currentWord = words[wordIndex];
+      const nextWord = words[(wordIndex + 1) % words.length];
+      
+      // Calculate common prefix to avoid deleting shared parts
+      let commonPrefix = "";
+      for (let i = 0; i < Math.min(currentWord.length, nextWord.length); i++) {
+        if (currentWord[i] === nextWord[i]) {
+          commonPrefix += currentWord[i];
+        } else {
+          break;
+        }
+      }
+
+      if (isDeleting) {
+        charIndex--;
+      } else {
+        charIndex++;
+      }
+
+      if (element) {
+        element.textContent = currentWord.substring(0, charIndex);
+      }
+
+      let typeSpeed = isDeleting ? 75 : 150;
+
+      if (!isDeleting && charIndex === currentWord.length) {
+        isDeleting = true;
+        typeSpeed = 5000; // wait at the end
+      } else if (isDeleting && charIndex === commonPrefix.length) {
+        isDeleting = false;
+        wordIndex = (wordIndex + 1) % words.length;
+        typeSpeed = 500; // wait before new word
+      }
+
+      setTimeout(type, typeSpeed);
+    }
+
+    // Handle initial wait
+    setTimeout(type, 3000);
+  }
+
+  document.addEventListener("astro:page-load", initHeaderWordmark);
+</script>

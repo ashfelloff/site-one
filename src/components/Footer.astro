@@ -1,0 +1,74 @@
+---
+import Container from "@components/Container.astro";
+import { SITE } from "@consts";
+import BackToTop from "@components/BackToTop.astro";
+---
+
+<footer class="animate">
+  <Container>
+    <div class="relative">
+      <div class="absolute right-0 -top-20">
+        <BackToTop />
+      </div>
+    </div>
+    <div class="flex justify-center items-center text-lg">
+      <div class="flex items-center gap-1">
+        &copy; 2026 {`|`} <span class="inline-block font-medium" style="font-family: 'Druk Wide', sans-serif;"><span class="inline-block translate-y-[0.05em]">✱</span>a<span id="footer-wordmark">c</span></span>
+      </div>
+    </div>
+  </Container>
+</footer>
+
+<script>
+  function initFooterWordmark() {
+    const words = ["c", "shfelloff", "shvoided"];
+    let wordIndex = 0;
+    let charIndex = words[wordIndex].length;
+    let isDeleting = true;
+    const element = document.getElementById("footer-wordmark");
+
+    function type() {
+      const currentWord = words[wordIndex];
+      const nextWord = words[(wordIndex + 1) % words.length];
+
+      // Calculate common prefix to avoid deleting shared parts
+      let commonPrefix = "";
+      for (let i = 0; i < Math.min(currentWord.length, nextWord.length); i++) {
+        if (currentWord[i] === nextWord[i]) {
+          commonPrefix += currentWord[i];
+        } else {
+          break;
+        }
+      }
+
+      if (isDeleting) {
+        charIndex--;
+      } else {
+        charIndex++;
+      }
+
+      if (element) {
+        element.textContent = currentWord.substring(0, charIndex);
+      }
+
+      let typeSpeed = isDeleting ? 75 : 150;
+
+      if (!isDeleting && charIndex === currentWord.length) {
+        isDeleting = true;
+        typeSpeed = 5000;
+      } else if (isDeleting && charIndex === commonPrefix.length) {
+        isDeleting = false;
+        wordIndex = (wordIndex + 1) % words.length;
+        typeSpeed = 500;
+      }
+
+      setTimeout(type, typeSpeed);
+    }
+
+    // Start typing after initial delay
+    setTimeout(type, 3000);
+  }
+
+  // Handle both initial load and ViewTransitions swap
+  document.addEventListener("astro:page-load", initFooterWordmark);
+</script>
