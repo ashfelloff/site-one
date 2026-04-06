@@ -3,16 +3,19 @@ import Container from "@components/Container.astro";
 import Link from "@components/Link.astro";
 ---
 
-<header>
+<header id="site-header" class="fixed top-0 left-0 w-full z-[300] transition-all duration-500 ease-in-out py-6">
   <Container>
-    <div class="flex flex-wrap gap-y-2 justify-between">
-      <Link href="/" underline={false}>
-        <div id="wordmark-container" class="group flex items-center min-w-[150px] font-medium" style="font-family: 'Druk Wide', sans-serif;">
-          <span class="inline-block translate-y-[0.05em]">✱</span>a<span id="wordmark">c</span>
-          <span class="animate-pulse ml-0.5 opacity-50 group-hover:opacity-0 transition-opacity duration-300">|</span>
-        </div>
-      </Link>
-      <nav class="flex gap-1">
+    <div id="header-inner" class="flex flex-wrap gap-y-2 justify-between items-center transition-all duration-500 ease-in-out max-w-full overflow-hidden">
+      <div id="wordmark-wrapper" class="transition-all duration-500 ease-in-out origin-left">
+        <Link href="/" underline={false}>
+          <div id="wordmark-container" class="group flex items-center min-w-[150px] font-medium" style="font-family: 'Druk Wide', sans-serif;">
+            <span class="inline-block translate-y-[0.05em]">✱</span>a<span id="wordmark">c</span>
+            <span class="animate-pulse ml-0.5 opacity-50 group-hover:opacity-0 transition-opacity duration-300">|</span>
+          </div>
+        </Link>
+      </div>
+      
+      <nav id="nav-menu" class="flex gap-1 transition-all duration-500 ease-in-out">
         <Link href="/blog">
           blog
         </Link>
@@ -33,7 +36,51 @@ import Link from "@components/Link.astro";
   </Container>
 </header>
 
+<style>
+  #site-header.scrolled {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  #site-header.scrolled #wordmark-wrapper {
+    opacity: 0;
+    max-width: 0;
+    transform: translateX(-20px);
+    pointer-events: none;
+  }
+
+  #site-header.scrolled #header-inner {
+    justify-content: center;
+  }
+
+  /* Desktop specific center telescoping */
+  @media (min-width: 768px) {
+    #site-header.scrolled #nav-menu {
+      transform: translateX(-75px); /* Compensate for the now-hidden wordmark space to align center */
+    }
+  }
+</style>
+
 <script>
+  function initHeaderScroll() {
+    const header = document.getElementById("site-header");
+    
+    if (header) {
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 40) {
+          header.classList.add("scrolled");
+        } else {
+          header.classList.remove("scrolled");
+        }
+      });
+    }
+  }
+  
+  document.addEventListener("astro:page-load", initHeaderScroll);
+
   function initHeaderWordmark() {
     const words = ["c", "shfelloff", "shvoided"];
     let wordIndex = 0;

@@ -21,56 +21,9 @@ interface Photo {
     reso: string;
   };
   id: string;
-}
-
-const locationCache = new Map<string, string>();
-
+}// Simplification: Locations now use raw GPS coordinates strictly
 async function getFriendlyLocation(lat: number, lon: number): Promise<string> {
-  const roundedLat = lat.toFixed(3);
-  const roundedLon = lon.toFixed(3);
-  const key = `${roundedLat},${roundedLon}`;
-  
-  if (locationCache.has(key)) return locationCache.get(key) || key;
-  
-  try {
-    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=en`, {
-      headers: { 'User-Agent': 'PersonalSite/1.0 (contact: ashwxth@gmail.com)' }
-    });
-    const data = await response.json();
-    const addr = data.address;
-    
-    // Hyper-specific priority
-    const precise = 
-      addr.amenity || 
-      addr.landmark || 
-      addr.building || 
-      addr.tourism || 
-      addr.historic || 
-      addr.leisure || 
-      addr.road || 
-      addr.pedestrian || 
-      addr.suburb || 
-      addr.neighbourhood || 
-      addr.quarter || 
-      addr.hamlet || "";
-
-    const city = addr.city || addr.town || addr.village || "";
-    const country = addr.country || "";
-    
-    let result = "";
-    if (precise) {
-       result = city && city !== precise ? `${precise}, ${city}` : precise;
-    } else if (city) {
-       result = city;
-    } else {
-       result = country || key;
-    }
-
-    locationCache.set(key, result);
-    return result;
-  } catch (e) {
-    return key;
-  }
+  return `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
 }
 
 const imageFiles = import.meta.glob<{ default: ImageMetadata }>("/src/assets/gallery/*.{jpeg,jpg,png,webp,JPEG,JPG,PNG,WEBP}", { eager: true });
