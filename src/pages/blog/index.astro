@@ -59,7 +59,6 @@ async function getFriendlyLocation(lat: number, lon: number): Promise<string> {
     
     let result = "";
     if (precise) {
-       // Only add city if it's different from the precise name
        result = city && city !== precise ? `${precise}, ${city}` : precise;
     } else if (city) {
        result = city;
@@ -74,8 +73,8 @@ async function getFriendlyLocation(lat: number, lon: number): Promise<string> {
   }
 }
 
-// Get all images from src/assets/gallery/ - Added HEIC and DNG support
-const imageFiles = import.meta.glob<{ default: ImageMetadata }>("/src/assets/gallery/*.{jpeg,jpg,png,webp,JPEG,JPG,PNG,WEBP,HEIC,heic,DNG,dng}", { eager: true });
+// Reverted to web-supported formats: jpeg, jpg, png, webp (Case-insensitive)
+const imageFiles = import.meta.glob<{ default: ImageMetadata }>("/src/assets/gallery/*.{jpeg,jpg,png,webp,JPEG,JPG,PNG,WEBP}", { eager: true });
 
 const photos: Photo[] = await Promise.all(
   Object.entries(imageFiles).map(async ([filepath, module]) => {
