@@ -23,7 +23,7 @@ interface Photo {
 }
 
 // Get all images from src/assets/gallery/
-const imageFiles = import.meta.glob<{ default: ImageMetadata }>("/src/assets/gallery/*.{jpeg,jpg,png,webp}", { eager: true });
+const imageFiles = import.meta.glob<{ default: ImageMetadata }>("/src/assets/gallery/*.{jpeg,jpg,png,webp,JPEG,JPG,PNG,WEBP}", { eager: true });
 
 const photos: Photo[] = await Promise.all(
   Object.entries(imageFiles).map(async ([filepath, module]) => {
