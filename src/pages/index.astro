@@ -74,48 +74,44 @@ import { SITE, HOME, SOCIALS } from "@consts";
     boxElement.style.transition = "all 0.4s ease-in-out";
 
     setTimeout(() => {
-      boxElement.style.opacity = "0";
+      // Direct swap without opacity: 0 to prevent blank space glitch
+      boxElement.innerHTML = `<span class="paren-part">(</span>ashwath.ch<span class="paren-part">)</span>`;
+      const parens = boxElement.querySelectorAll(".paren-part");
+      
+      // Highlight state
+      boxElement.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
+      boxElement.style.backdropFilter = "blur(8px)";
+      boxElement.style.border = "1px solid rgba(255, 255, 255, 0.2)";
+      boxElement.style.color = "white";
+      boxElement.style.padding = "0 6px";
+      boxElement.style.borderRadius = "4px";
+      boxElement.style.opacity = "1";
+
+      parens.forEach(p => {
+        (p as HTMLElement).style.color = "transparent";
+        (p as HTMLElement).style.transition = "color 1s ease-in-out";
+      });
+      
+      // Step 1: Reveal subtle parens
       setTimeout(() => {
-        // Use innerHTML to style parentheses separately
-        boxElement.innerHTML = `<span class="paren-part">(</span>ashwath.ch<span class="paren-part">)</span>`;
-        const parens = boxElement.querySelectorAll(".paren-part");
+        boxElement.style.backgroundColor = "transparent";
+        boxElement.style.backdropFilter = "none";
+        boxElement.style.border = "1px solid transparent";
+        boxElement.style.padding = "0";
         
-        // Initial highlight state
-        boxElement.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
-        boxElement.style.backdropFilter = "blur(8px)";
-        boxElement.style.border = "1px solid rgba(255, 255, 255, 0.2)";
-        boxElement.style.color = "white";
-        boxElement.style.padding = "0 3px";
-        boxElement.style.borderRadius = "4px";
-        boxElement.style.opacity = "1";
-
-        // Parentheses are transparent during highlight (perfect blend)
         parens.forEach(p => {
-          (p as HTMLElement).style.color = "transparent";
-          (p as HTMLElement).style.transition = "color 1s ease-in-out";
+          (p as HTMLElement).style.color = "rgba(255, 255, 255, 0.4)";
         });
-        
-        // Step 1: Box fades, Parens become subtle
+
+        // Step 2: Full reveal
         setTimeout(() => {
-          boxElement.style.backgroundColor = "transparent";
-          boxElement.style.backdropFilter = "none";
-          boxElement.style.border = "1px solid transparent";
-          boxElement.style.padding = "0";
-          
           parens.forEach(p => {
-            (p as HTMLElement).style.color = "rgba(255, 255, 255, 0.4)";
+            (p as HTMLElement).style.color = "white";
           });
-
-          // Step 2: Final reveal to full white after 2 more seconds
-          setTimeout(() => {
-            parens.forEach(p => {
-              (p as HTMLElement).style.color = "white";
-            });
-          }, 2000);
-
         }, 1500);
-      }, 300);
-    }, 3000);
+
+      }, 1200);
+    }, 2500);
   }
 
   document.addEventListener("astro:page-load", initNameAnimation);
