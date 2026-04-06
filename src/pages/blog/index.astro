@@ -98,7 +98,15 @@ const formatDate = (date: Date) => {
                 tech: photo.tech
               })}
             >
-              <Image src={photo.image} alt={photo.location} class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" />
+              <Image 
+                src={photo.image} 
+                alt={photo.location} 
+                class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" 
+                loading="lazy"
+                decoding="async"
+                width={800}
+                quality="mid"
+              />
             </div>
           ))}
         </div>
