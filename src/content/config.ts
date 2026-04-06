@@ -32,15 +32,5 @@ const projects = defineCollection({
   }),
 });
 
-const photos = defineCollection({
-  type: "content",
-  schema: ({ image }) => z.object({
-    image: image(),
-    date: z.coerce.date(),
-    location: z.string().optional(),
-    caption: z.string().optional(),
-    draft: z.boolean().optional()
-  }),
-});
 
-export const collections = { blog, work, projects, photos };
+export const collections = { blog, work, projects };
