@@ -23,12 +23,11 @@ interface Photo {
   id: string;
 }
 
-// Simple cache for geocoding to avoid rate limits
 const locationCache = new Map<string, string>();
 
 async function getFriendlyLocation(lat: number, lon: number): Promise<string> {
-  const roundedLat = lat.toFixed(2);
-  const roundedLon = lon.toFixed(2);
+  const roundedLat = lat.toFixed(3);
+  const roundedLon = lon.toFixed(3);
   const key = `${roundedLat},${roundedLon}`;
   
   if (locationCache.has(key)) return locationCache.get(key) || key;
@@ -38,9 +37,23 @@ async function getFriendlyLocation(lat: number, lon: number): Promise<string> {
       headers: { 'User-Agent': 'PersonalSite/1.0 (contact: ashwxth@gmail.com)' }
     });
     const data = await response.json();
-    const city = data.address.city || data.address.town || data.address.village || data.address.suburb || "";
-    const country = data.address.country || "";
-    const result = city ? `${city}, ${country}` : country || key;
+    const addr = data.address;
+    
+    // Priority for specific location names
+    const specific = addr.amenity || addr.landmark || addr.building || addr.road || addr.pedestrian || addr.suburb || addr.neighbourhood || "";
+    const city = addr.city || addr.town || addr.village || "";
+    const state = addr.state || "";
+    const country = addr.country || "";
+    
+    let result = "";
+    if (specific) {
+       result = city ? `${specific}, ${city}` : specific;
+    } else if (city) {
+       result = state ? `${city}, ${state}` : city;
+    } else {
+       result = country || key;
+    }
+
     locationCache.set(key, result);
     return result;
   } catch (e) {
@@ -63,42 +76,25 @@ const photos: Photo[] = await Promise.all(
     } catch (e) {}
 
     const date = metadata?.DateTimeOriginal || fs.statSync(absolutePath).birthtime || new Date();
-    
     const device = metadata?.Model ? `${metadata.Make || ''} ${metadata.Model}`.trim() : "";
-    const lensRaw = metadata?.LensModel || "";
-    // Clean up long lens names
-    const lens = lensRaw.length > 30 ? lensRaw.split(' ').slice(0, 5).join(' ') + "..." : lensRaw;
-    
     const iso = metadata?.ISO ? `ISO ${metadata.ISO}` : "";
     const aperture = metadata?.FNumber ? `f/${Number(metadata.FNumber).toFixed(2)}` : "";
     const exposure = metadata?.ExposureTime ? (metadata.ExposureTime < 1 ? `1/${Math.round(1/metadata.ExposureTime)}` : `${metadata.ExposureTime}s`) : "";
-    const resolution = `${image.width} × ${image.height}`;
-
-    let location = "";
-    let coords = "";
-    if (metadata?.latitude && metadata?.longitude) {
-      coords = `${metadata.latitude.toFixed(2)}, ${metadata.longitude.toFixed(2)}`;
-      location = await getFriendlyLocation(metadata.latitude, metadata.longitude);
-    } else {
-      const basename = path.basename(filepath, path.extname(filepath));
-      location = basename
-        .split(/[-_]/)
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
-    }
+    
+    const location = metadata?.latitude ? await getFriendlyLocation(metadata.latitude, metadata.longitude) : path.basename(filepath, path.extname(filepath)).replace(/[-_]/g, " ");
 
     return {
       image,
       date,
       location,
-      coords,
+      coords: metadata?.latitude ? `${metadata.latitude.toFixed(2)}, ${metadata.longitude.toFixed(2)}` : "",
       tech: {
         device,
-        lens: lens || "Native",
+        lens: metadata?.LensModel?.replace("BACK CAMERA", "BC") || "Native",
         iso,
         f: aperture,
         shutter: exposure,
-        reso: resolution
+        reso: `${image.width} × ${image.height}`
       },
       id: path.basename(filepath)
     };
@@ -108,10 +104,7 @@ const photos: Photo[] = await Promise.all(
 photos.sort((a, b) => b.date.valueOf() - a.date.valueOf());
 
 const formatDate = (date: Date) => {
-  return Intl.DateTimeFormat("en-US", {
-    month: "short",
-    year: "numeric"
-  }).format(date);
+  return Intl.DateTimeFormat("en-US", { month: "short", year: "numeric" }).format(date);
 };
 ---
 
@@ -127,7 +120,7 @@ const formatDate = (date: Date) => {
           more to come soon..
         </div>
       ) : (
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 animate">
+        <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 animate">
           {photos.map((photo, index) => (
             <div 
               class="photo-item relative aspect-square overflow-hidden rounded-xl cursor-pointer group bg-neutral-900 shadow-lg"
@@ -140,16 +133,7 @@ const formatDate = (date: Date) => {
                 tech: photo.tech
               })}
             >
-              <Image 
-                src={photo.image} 
-                alt={photo.location}
-                class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-              />
-              <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-                <p class="text-white text-xs font-medium truncate">
-                  {photo.location}
-                </p>
-              </div>
+              <Image src={photo.image} alt={photo.location} class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" />
             </div>
           ))}
         </div>
@@ -158,78 +142,71 @@ const formatDate = (date: Date) => {
   </Container>
 
   <!-- Lightbox Overlay -->
-  <div id="lightbox" class="fixed inset-0 z-[100] bg-black/98 opacity-0 pointer-events-none transition-opacity duration-300 flex flex-col items-center justify-center p-4">
+  <div id="lightbox" class="fixed inset-0 z-[100] bg-black/98 opacity-0 pointer-events-none transition-opacity duration-300 flex flex-col items-center p-4 overflow-y-auto">
     <!-- Close -->
-    <button id="close-lightbox" class="absolute top-6 right-6 text-white/50 hover:text-white z-[110] transition-colors">
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    <button id="close-lightbox" class="fixed top-6 right-6 text-white/50 hover:text-white z-[110] transition-colors bg-black/20 rounded-full p-2">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     </button>
     
-    <!-- Controls -->
-    <button id="prev-photo" class="absolute left-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white z-[110] p-4 transition-all">
-      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-    </button>
-    
-    <button id="next-photo" class="absolute right-4 top-1/2 -translate-y-1/2 text-white/20 hover:text-white z-[110] p-4 transition-all">
-      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-    </button>
-
-    <!-- Main Content -->
-    <div class="relative max-w-6xl w-full h-[70vh] flex items-center justify-center">
-      <img id="lightbox-img" src="" alt="" class="max-w-full max-h-full object-contain shadow-2xl rounded-sm" />
+    <!-- Image Content -->
+    <div class="relative w-full max-w-6xl mt-12 md:mt-0 flex flex-col flex-1 items-center justify-center min-h-[50vh] md:min-h-[70vh]">
+      <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[50vh] md:max-h-[75vh] object-contain shadow-2xl rounded-sm transition-opacity duration-300" />
+      
+      <!-- Paging arrows for desktop -->
+      <button id="prev-photo" class="hidden md:block absolute left-[-80px] top-1/2 -translate-y-1/2 text-white/20 hover:text-white transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <button id="next-photo" class="hidden md:block absolute right-[-80px] top-1/2 -translate-y-1/2 text-white/20 hover:text-white transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
     </div>
     
-    <!-- Redesigned Technical Info Bar -->
-    <div class="mt-12 w-full max-w-5xl px-6 pb-8">
-      <div class="flex flex-col md:flex-row justify-between items-center md:items-end gap-x-12 gap-y-10">
-        
-        <!-- Left: Branding & Location -->
-        <div class="flex items-end gap-x-8 border-l border-white/10 pl-8">
-          <div class="text-center md:text-left space-y-1">
-             <p id="lb-location" class="text-white text-xl md:text-2xl font-medium tracking-tight mb-1"></p>
-             <div class="flex items-center gap-3 text-white/30 text-xs font-mono">
-                <span id="lb-coords"></span>
-                <span class="opacity-20">|</span>
-                <span id="lb-date"></span>
-             </div>
+    <!-- Meta Data Overlay -->
+    <div class="w-full max-w-5xl mt-8 mb-12">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-y-12">
+        <!-- Location Info -->
+        <div class="space-y-3 pl-4 border-l border-white/5">
+          <h2 id="lb-location" class="text-white text-2xl md:text-3xl font-medium tracking-tight"></h2>
+          <div class="flex items-center gap-4 text-white/40 text-xs font-mono uppercase tracking-widest">
+            <span id="lb-coords"></span>
+            <span class="opacity-30">/</span>
+            <span id="lb-date"></span>
           </div>
         </div>
-        
-        <!-- Right: Technical Details Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:items-end gap-x-8 gap-y-6 text-[10px] uppercase tracking-[0.25em] text-white/30 font-semibold w-full md:w-auto">
-          
-          <div class="flex flex-col gap-1.5 min-w-[120px]">
-             <span class="text-white/50 text-[9px] tracking-widest opacity-80">Device</span>
-             <span id="lb-device" class="text-white/80 leading-tight"></span>
-          </div>
 
-          <div class="flex flex-col gap-1.5 min-w-[140px] max-w-[200px]">
-             <span class="text-white/50 text-[9px] tracking-widest opacity-80">Optics</span>
-             <span id="lb-lens" class="text-white/80 leading-tight truncate"></span>
+        <!-- Tech Info Hub -->
+        <div class="grid grid-cols-2 md:flex md:items-end gap-x-12 gap-y-8 w-full md:w-auto px-4">
+          <div class="flex flex-col gap-2">
+            <span class="text-white/20 text-[9px] uppercase tracking-[0.3em] font-bold">Hardware</span>
+            <div class="space-y-1">
+              <p id="lb-device" class="text-white/70 text-xs uppercase font-medium tracking-wide"></p>
+              <p id="lb-lens" class="text-white/30 text-[10px] uppercase truncate max-w-[150px]"></p>
+            </div>
           </div>
 
           <div class="flex items-end gap-8 border-l border-white/5 pl-8">
-            <div class="flex flex-col gap-1.5">
-               <span class="text-white/50 text-[9px] tracking-widest opacity-80">Exp</span>
-               <span id="lb-shutter" class="text-white/80"></span>
-            </div>
-            <div class="flex flex-col gap-1.5">
-               <span class="text-white/50 text-[9px] tracking-widest opacity-80">Ap</span>
-               <span id="lb-f" class="text-white/80"></span>
-            </div>
-            <div class="flex flex-col gap-1.5">
-               <span class="text-white/50 text-[9px] tracking-widest opacity-80">ISO</span>
-               <span id="lb-iso" class="text-white/80"></span>
+            <div class="flex flex-col gap-2">
+              <span class="text-white/20 text-[9px] uppercase tracking-[0.3em] font-bold">Specs</span>
+              <div class="flex gap-4 text-white/70 text-[11px] font-mono">
+                <span id="lb-shutter"></span>
+                <span id="lb-f"></span>
+                <span id="lb-iso"></span>
+              </div>
             </div>
           </div>
 
-          <div class="flex flex-col gap-1.5 border-l border-white/5 pl-8 ml-auto sm:ml-0">
-             <span class="text-white/50 text-[9px] tracking-widest opacity-80">Output</span>
-             <span id="lb-reso" class="text-white/80"></span>
+          <div class="flex flex-col gap-2 border-l border-white/5 pl-8">
+            <span class="text-white/20 text-[9px] uppercase tracking-[0.3em] font-bold">Resolution</span>
+            <span id="lb-reso" class="text-white/30 text-[11px] font-mono"></span>
           </div>
-
         </div>
-
       </div>
+    </div>
+
+    <!-- Mobile Nav Controls -->
+    <div class="flex md:hidden gap-12 mt-4 mb-20">
+      <button id="mobile-prev" class="text-white/40 active:text-white p-4">Prev</button>
+      <button id="mobile-next" class="text-white/40 active:text-white p-4">Next</button>
     </div>
   </div>
 </PageLayout>
@@ -240,6 +217,7 @@ const formatDate = (date: Date) => {
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
     
+    // Meta data
     const lbLocation = document.getElementById('lb-location');
     const lbCoords = document.getElementById('lb-coords');
     const lbDate = document.getElementById('lb-date');
@@ -253,6 +231,8 @@ const formatDate = (date: Date) => {
     const closeBtn = document.getElementById('close-lightbox');
     const prevBtn = document.getElementById('prev-photo');
     const nextBtn = document.getElementById('next-photo');
+    const mPrev = document.getElementById('mobile-prev');
+    const mNext = document.getElementById('mobile-next');
     
     if (!lightbox || !lightboxImg || !items.length) return;
 
@@ -271,28 +251,25 @@ const formatDate = (date: Date) => {
       }, 150);
 
       if (lbLocation) lbLocation.textContent = data.location || "";
-      if (lbCoords) lbCoords.textContent = data.coords || "";
-      if (lbDate) lbDate.textContent = data.date || "";
+      if (lbCoords) lbCoords.textContent = data.coords || "—";
+      if (lbDate) lbDate.textContent = data.date || "—";
       if (lbDevice) lbDevice.textContent = data.tech.device || "—";
       if (lbLens) lbLens.textContent = data.tech.lens || "—";
       if (lbShutter) lbShutter.textContent = data.tech.shutter || "—";
       if (lbF) lbF.textContent = data.tech.f || "—";
       if (lbIso) lbIso.textContent = data.tech.iso || "—";
       if (lbReso) lbReso.textContent = data.tech.reso || "—";
-      
-      if (prevBtn) prevBtn.style.visibility = index === 0 ? "hidden" : "visible";
-      if (nextBtn) nextBtn.style.visibility = index === photoData.length - 1 ? "hidden" : "visible";
     }
 
     function openLightbox(index: number) {
       updateLightbox(index);
-      lightbox?.classList.remove('pointer-events-none');
+      lightbox?.classList.remove('pointer-events-none', 'opacity-0');
       lightbox?.classList.add('opacity-100');
       document.body.style.overflow = 'hidden';
     }
 
     function closeLightbox() {
-      lightbox?.classList.add('pointer-events-none');
+      lightbox?.classList.add('pointer-events-none', 'opacity-0');
       lightbox?.classList.remove('opacity-100');
       document.body.style.overflow = '';
     }
@@ -303,21 +280,19 @@ const formatDate = (date: Date) => {
 
     closeBtn?.addEventListener('click', closeLightbox);
     
-    prevBtn?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (currentIndex > 0) updateLightbox(currentIndex - 1);
-    });
-    
-    nextBtn?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (currentIndex < photoData.length - 1) updateLightbox(currentIndex + 1);
-    });
+    const handleNext = () => currentIndex < photoData.length - 1 && updateLightbox(currentIndex + 1);
+    const handlePrev = () => currentIndex > 0 && updateLightbox(currentIndex - 1);
+
+    prevBtn?.addEventListener('click', handlePrev);
+    nextBtn?.addEventListener('click', handleNext);
+    mPrev?.addEventListener('click', handlePrev);
+    mNext?.addEventListener('click', handleNext);
 
     document.addEventListener('keydown', (e) => {
       if (lightbox?.classList.contains('opacity-100')) {
         if (e.key === 'Escape') closeLightbox();
-        if (e.key === 'ArrowLeft' && currentIndex > 0) updateLightbox(currentIndex - 1);
-        if (e.key === 'ArrowRight' && currentIndex < photoData.length - 1) updateLightbox(currentIndex + 1);
+        if (e.key === 'ArrowLeft') handlePrev();
+        if (e.key === 'ArrowRight') handleNext();
       }
     });
 
@@ -328,9 +303,3 @@ const formatDate = (date: Date) => {
 
   document.addEventListener('astro:page-load', initLightbox);
 </script>
-
-<style>
-  #lightbox-img {
-    transition: opacity 0.3s ease-in-out;
-  }
-</style>
