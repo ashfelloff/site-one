@@ -120,10 +120,9 @@ const formatDate = (date: Date) => {
 ---
 
 <PageLayout title={BLOG.TITLE} description={BLOG.DESCRIPTION}>
-  <Container>
-    <div class="space-y-10">
+  <Container>    <div class="space-y-10">
       <div class="animate font-semibold text-black dark:text-white">
-        Gallery
+        a blog kinda
       </div>
       
       {photos.length === 0 ? (
@@ -333,6 +332,26 @@ const formatDate = (date: Date) => {
     mPrev?.addEventListener('click', prev);
     mNext?.addEventListener('click', next);
 
+    // Swipe Support
+    let touchstartX = 0;
+    let touchendX = 0;
+
+    lightbox.addEventListener('touchstart', e => {
+      touchstartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    lightbox.addEventListener('touchend', e => {
+      touchendX = e.changedTouches[0].screenX;
+      handleGesture();
+    }, { passive: true });
+
+    function handleGesture() {
+      const diff = touchendX - touchstartX;
+      if (Math.abs(diff) < 50) return; // Prevent accidental swipes
+      if (diff < 0) next();
+      if (diff > 0) prev();
+    }
+
     document.addEventListener('keydown', (e) => {
       if (lightbox?.classList.contains('opacity-100')) {
         if (e.key === 'Escape') closeBtn?.click();
@@ -347,6 +366,7 @@ const formatDate = (date: Date) => {
   }
 
   document.addEventListener('astro:page-load', initLightbox);
+</script>htbox);
 </script>
 
 <style>
