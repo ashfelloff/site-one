@@ -106,11 +106,11 @@ const formatDate = (date: Date) => {
     </div>
   </Container>
 
-  <!-- Solid Immersive Lightbox Overlay (Z-indexed above header for total silence) -->
-  <div id="lightbox" class="fixed inset-0 z-[600] bg-black opacity-0 pointer-events-none transition-opacity duration-200 flex flex-col items-center overflow-y-auto">
+  <!-- Solid Immersive Lightbox Overlay -->
+  <div id="lightbox" class="fixed inset-0 z-[400] bg-black opacity-0 pointer-events-none transition-opacity duration-200 flex flex-col items-center overflow-y-auto">
     
     <!-- Top Bar: Close (Fixed) -->
-    <div class="sticky top-0 w-full h-20 px-6 flex items-center justify-end z-[620]">
+    <div class="sticky top-0 w-full h-20 px-6 flex items-center justify-end z-[220]">
       <button id="close-lightbox" class="text-white/40 hover:text-white transition-colors p-2 bg-black/40 backdrop-blur-md rounded-full">
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
@@ -120,24 +120,32 @@ const formatDate = (date: Date) => {
     <div class="relative w-full flex flex-col items-center justify-center px-4 -mt-10 md:mt-0">
       <div class="relative max-w-6xl w-full flex justify-center">
         <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[45vh] md:max-h-[70vh] object-contain shadow-2xl transition-opacity duration-150" />
+        
+        <!-- Desktop Nav Arrows: Moved inside viewport to prevent clipping -->
+        <button id="prev-photo" class="hidden md:flex fixed left-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-all p-8 bg-white/5 hover:bg-white/10 backdrop-blur-2xl rounded-full border border-white/10 shadow-2xl items-center justify-center group z-[230]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:scale-110 transition-transform"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button id="next-photo" class="hidden md:block fixed right-8 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-all p-8 bg-white/5 hover:bg-white/10 backdrop-blur-2xl rounded-full border border-white/10 shadow-2xl items-center justify-center group z-[230]">
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="group-hover:scale-110 transition-transform"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
       </div>
 
-      <!-- Integrated Switcher (Below Image) - Now High Visibility on Desktop -->
-      <div class="mt-8 flex items-center gap-8 px-5 py-2 bg-white/5 border border-white/10 rounded-full group cursor-default">
-        <button id="mobile-prev" class="text-white/20 hover:text-white active:scale-90 transition-all p-2">
+      <!-- Integrated Switcher (Below Image) - Now Desktop & Mobile -->
+      <div class="mt-8 flex items-center gap-8 px-5 py-2 bg-white/5 border border-white/10 rounded-full z-[250]">
+        <button id="mobile-prev" class="text-white/20 active:text-white transition-colors p-2 cursor-pointer hover:text-white/60">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
         </button>
         <span class="text-white/40 text-[9px] font-mono tracking-[0.3em] min-w-[40px] text-center">
           <span id="lb-index">0</span> / <span id="lb-total">0</span>
         </span>
-        <button id="mobile-next" class="text-white/20 hover:text-white active:scale-90 transition-all p-2">
+        <button id="mobile-next" class="text-white/20 active:text-white transition-colors p-2 cursor-pointer hover:text-white/60">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </button>
       </div>
     </div>
     
-    <!-- Info Section: Immersive black out -->
-    <div class="w-full max-w-5xl px-8 pb-32 pt-12 md:pt-16 bg-black z-[610]">
+    <!-- Info Section: Cleaned duplicate GPS -->
+    <div class="w-full max-w-5xl px-8 pb-32 pt-12 md:pt-16 bg-black">
       <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-x-12 gap-y-12">
         
         <!-- Details Column -->
@@ -155,7 +163,7 @@ const formatDate = (date: Date) => {
                <span class="text-white/20 text-[9px] uppercase tracking-[0.4em] font-bold">Gear</span>
                <div class="space-y-1">
                   <p id="lb-device" class="text-white/80 text-[11px] uppercase tracking-wide"></p>
-                  <p id="lb-lens" class="text-white/30 text-[9px] uppercase tracking-wider max-w-[160px] truncate"></p>
+                  <p id="lb-lens" class="text-white/30 text-[9px] uppercase tracking-wider max-w-[140px] truncate"></p>
                </div>
             </div>
             
@@ -209,6 +217,8 @@ const formatDate = (date: Date) => {
     
     // Buttons
     const closeBtn = document.getElementById('close-lightbox');
+    const prevBtn = document.getElementById('prev-photo');
+    const nextBtn = document.getElementById('next-photo');
     const mPrev = document.getElementById('mobile-prev');
     const mNext = document.getElementById('mobile-next');
     
@@ -269,6 +279,8 @@ const formatDate = (date: Date) => {
     function next() { if (currentIndex < photoData.length - 1) updateLightbox(currentIndex + 1, true); }
     function prev() { if (currentIndex > 0) updateLightbox(currentIndex - 1, true); }
 
+    prevBtn?.addEventListener('click', prev);
+    nextBtn?.addEventListener('click', next);
     mPrev?.addEventListener('click', prev);
     mNext?.addEventListener('click', next);
 
