@@ -88,7 +88,7 @@ const formatDate = (date: Date) => {
         <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 animate relative z-0">
           {photos.map((photo, index) => (
             <div 
-              class="photo-item relative aspect-square overflow-hidden rounded-xl cursor-pointer group bg-neutral-900 shadow-lg"
+              class="photo-item relative aspect-square overflow-hidden rounded-xl cursor-pointer group bg-neutral-900 border border-white/5"
               data-index={index}
               data-photo={JSON.stringify({
                 src: photo.image.src,
@@ -104,7 +104,8 @@ const formatDate = (date: Date) => {
                 class="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110" 
                 loading="lazy"
                 decoding="async"
-                width={800}
+                widths={[240, 400, 600]}
+                sizes="(max-width: 768px) 50vw, 33vw"
                 quality="mid"
               />
             </div>
