@@ -224,8 +224,7 @@ const formatDate = (date: Date) => {
     if (!lightbox || !lightboxImg || !items.length) return;
 
     let currentIndex = 0;
-    const photoData = Array.from(items).map(item => JSON.parse(item.getAttribute('data-photo') || '{}'));
-    if (lbTotal) lbTotal.textContent = photoData.length.toString();
+    if (lbTotal) lbTotal.textContent = items.length.toString();
 
     function preloadImage(url: string) {
       if (!url) return;
@@ -233,10 +232,15 @@ const formatDate = (date: Date) => {
       img.src = url;
     }
 
+    // Lazy Parsing: Extract data only when needed to prevent main-thread block
+    function getPhotoData(item: Element) {
+      return JSON.parse(item.getAttribute('data-photo') || '{}');
+    }
+
     function updateLightbox(index: number, skipFade = false) {
-      if (index < 0 || index >= photoData.length) return;
+      if (index < 0 || index >= items.length) return;
       currentIndex = index;
-      const data = photoData[index];
+      const data = getPhotoData(items[index]);
       
       if (skipFade) {
         lightboxImg.src = data.src;
@@ -246,8 +250,11 @@ const formatDate = (date: Date) => {
         lightboxImg.onload = () => lightboxImg.style.opacity = "1";
       }
 
-      if (index + 1 < photoData.length) preloadImage(photoData[index + 1].src);
-      if (index - 1 >= 0) preloadImage(photoData[index - 1].src);
+      // Defer preloading slightly to prioritize the current image view
+      setTimeout(() => {
+        if (index + 1 < items.length) preloadImage(getPhotoData(items[index + 1]).src);
+        if (index - 1 >= 0) preloadImage(getPhotoData(items[index - 1]).src);
+      }, 300);
 
       if (lbLocation) lbLocation.textContent = data.location || "";
       if (lbDate) lbDate.textContent = data.date || "—";
@@ -260,6 +267,7 @@ const formatDate = (date: Date) => {
       if (lbIndex) lbIndex.textContent = (index + 1).toString();
     }
 
+    // Attach listeners immediately to ensure clickability
     items.forEach((item, index) => {
       item.addEventListener('click', () => {
         updateLightbox(index);
@@ -275,7 +283,7 @@ const formatDate = (date: Date) => {
       document.body.style.overflow = '';
     });
     
-    function next() { if (currentIndex < photoData.length - 1) updateLightbox(currentIndex + 1, true); }
+    function next() { if (currentIndex < items.length - 1) updateLightbox(currentIndex + 1, true); }
     function prev() { if (currentIndex > 0) updateLightbox(currentIndex - 1, true); }
 
     mPrev?.addEventListener('click', prev);
